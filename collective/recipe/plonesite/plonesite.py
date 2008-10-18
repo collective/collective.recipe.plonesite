@@ -18,17 +18,22 @@ Add one --profiles argument per profile you want to run after the
 quickinstall has run each time the buildout has been run.
     --profiles=my.package:default
 """
+
+from datetime import datetime
 import transaction
 from AccessControl.SecurityManagement import newSecurityManager, noSecurityManager
 from Testing import makerequest
 from optparse import OptionParser
+
+
+now_str = datetime.now().strftime('%Y-%m-%d-%H%M%S')
 
 parser = OptionParser()
 parser.add_option(
     "-s",
     "--site-id",
     dest="site_id",
-    default="Plone"
+    default="Plone-%s" % now_str
 )
 parser.add_option(
     "-u",

@@ -4,3 +4,9 @@
 - Created recipe with ZopeSkel
   [claytron]
 
+- new Plone sites will be created with a datetime suffix
+  which is helpful if you need to re-run new instances
+  over and over again e.g. for migration purposes. If you
+  need a fixed site id then explictely set the id using
+  the site-id option.
+  [ajung]
