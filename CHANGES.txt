@@ -1,8 +1,5 @@
-0.1 (xxxx-xx-xx)
+0.2 (xxxx-xx-xx)
 ================
-
-- Created recipe with ZopeSkel
-  [claytron]
 
 - new Plone sites will be created with a datetime suffix
   which is helpful if you need to re-run new instances
@@ -10,3 +7,9 @@
   need a fixed site id then explictely set the id using
   the site-id option.
   [ajung]
+
+0.1 (2008-10-11)
+================
+
+- Created recipe with ZopeSkel
+  [claytron]
