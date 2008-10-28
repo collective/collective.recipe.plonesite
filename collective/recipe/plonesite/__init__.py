@@ -19,6 +19,7 @@ class Recipe(object):
         self.options['scripts'] = ''
         options['bin-directory'] = buildout['buildout']['bin-directory']
         self.site_id = options['site-id']
+        self.site_replace = options['site-replace']
         self.admin_user = options['admin-user']
         self.products_initial = options.get('products-initial', "").split()
         self.profiles_initial = options.get('profiles-initial', "").split()
@@ -70,6 +71,7 @@ class Recipe(object):
         """
         args = []
         args.append("--site-id=%s" % self.site_id)
+        args.append("--site-replace=%s" % self.site_replace)
         args.append("--admin-user=%s" % self.admin_user)
         def createArgList(arg_name, arg_list):
             if arg_list:

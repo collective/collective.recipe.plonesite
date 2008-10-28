@@ -3,6 +3,8 @@ Options are as follows:
 
 The id of the plone site to be created.
     --site-id=Plone
+Replace any existing plone site named site-id. Defaults to off.
+    --site-replace=off
 The user to run the script as (needs to be a Manager at the root)
     --admin-user=admin
 Add one --products argument per product you want to quickinstall when initially
@@ -24,6 +26,7 @@ import transaction
 from AccessControl.SecurityManagement import newSecurityManager, noSecurityManager
 from Testing import makerequest
 from optparse import OptionParser
+from plone.app.linkintegrity.exceptions import LinkIntegrityNotificationException
 
 
 now_str = datetime.now().strftime('%Y-%m-%d-%H%M%S')
@@ -34,6 +37,12 @@ parser.add_option(
     "--site-id",
     dest="site_id",
     default="Plone-%s" % now_str
+)
+parser.add_option(
+    "-r",
+    "--site-replace",
+    dest="site_replace",
+    default="off"
 )
 parser.add_option(
     "-u",
@@ -72,6 +81,7 @@ parser.add_option(
 
 (options, args) = parser.parse_args()
 site_id = options.site_id
+site_replace = options.site_replace
 admin_user = options.admin_user
 # the madness with the comma is a result of product names with spaces
 def getProductsWithSpace(opts):
@@ -83,13 +93,22 @@ profiles = getProductsWithSpace(options.profiles)
 def create(site_id, products):
     oids = app.objectIds()
     if site_id in oids:
-        print "A Plone site already exists"
-        return
+        if site_replace == "on" and hasattr(app, site_id):
+            try:
+                app.manage_delObjects([site_id,])
+            except LinkIntegrityNotificationException:
+                pass
+            transaction.commit()
+            print "Removed existing Plone Site"
+            oids = app.objectIds()
+        else:
+            print "A Plone Site already exists and will not be replaced"
+            return
     # actually add in Plone
     if site_id not in oids:
         factory = app.manage_addProduct['CMFPlone']
         factory.addPloneSite(site_id, create_userfolder=1)
-        print "Added Plone"
+        print "Added Plone Site"
     # install some products
     plone = getattr(app, site_id)
     if plone:
