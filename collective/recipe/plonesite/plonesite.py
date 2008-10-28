@@ -11,7 +11,7 @@ creating the site.
 Add one --products argument per product you want to quickinstall upon
 every run of buildout.
     --products=MyProductName
-Add one --profiles-intial argumanet per profile you want to run after the
+Add one --profiles-initial argumanet per profile you want to run after the
 quickinstall has run when initially creating the site.
     --profiles-inital=my.package:default
 Add one --profiles argument per profile you want to run after the
@@ -44,7 +44,7 @@ parser.add_option(
 parser.add_option(
     "-p",
     "--products-initial",
-    dest="products_intial",
+    dest="products_initial",
     action="append",
     default=[]
 )
@@ -76,7 +76,7 @@ admin_user = options.admin_user
 # the madness with the comma is a result of product names with spaces
 def getProductsWithSpace(opts):
     return [x.replace(',', '') for x in opts]
-products_initial = getProductsWithSpace(options.products_intial)
+products_initial = getProductsWithSpace(options.products_initial)
 products = getProductsWithSpace(options.products)
 profiles_initial = getProductsWithSpace(options.profiles_initial)
 profiles = getProductsWithSpace(options.profiles)
