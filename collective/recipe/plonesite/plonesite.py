@@ -76,7 +76,6 @@ admin_user = options.admin_user
 # the madness with the comma is a result of product names with spaces
 def getProductsWithSpace(opts):
     return [x.replace(',', '') for x in opts]
-products_initial = getProductsWithSpace(options.products_initial)
 products = getProductsWithSpace(options.products)
 profiles_initial = getProductsWithSpace(options.profiles_initial)
 profiles = getProductsWithSpace(options.profiles)
@@ -94,6 +93,7 @@ def create(site_id, products):
     # install some products
     plone = getattr(app, site_id)
     if plone:
+        products_initial = getProductsWithSpace(options.products_initial)
         print "Quickinstalling: %s" % products_initial
         qit = plone.portal_quickinstaller
         products_initial = set(products_initial)
