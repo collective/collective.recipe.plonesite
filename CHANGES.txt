@@ -8,6 +8,17 @@
   the site-id option.
   [ajung]
 
+- Add buildout recipe option site-replace, defaults to
+  off. Use with site-id.
+
+  New recipe option site-replace = on will remove any
+  existing object in app named site-id. A new plone site
+  will be created to replace it.
+
+  Default option setting site-replace = off will not remove
+  existing objects in app named site-id.
+  [jeffk]
+
 0.1 (2008-10-11)
 ================
 
