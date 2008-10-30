@@ -1,4 +1,4 @@
-0.2 (xxxx-xx-xx)
+0.2 (2008-10-30)
 ================
 
 - new Plone sites will be created with a datetime suffix

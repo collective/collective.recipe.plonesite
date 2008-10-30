@@ -24,29 +24,3 @@ instance
 
 zeoserver
     The name of the zeoserver part that should be used.  This is only required if you are using a zope/zeo setup. Default: not set
-
-Example usage
-=============
-
-We'll start by creating a buildout that uses the recipe::
-
-    >>> write('buildout.cfg',
-    ... """
-    ... [buildout]
-    ... parts = test1
-    ...
-    ... [test1]
-    ... recipe = collective.recipe.plonesite
-    ... option1 = %(foo)s
-    ... option2 = %(bar)s
-    ... """ % { 'foo' : 'value1', 'bar' : 'value2'})
-
-Running the buildout gives us::
-
-    >>> print 'start', system(buildout) # doctest:+ELLIPSIS
-    start...
-    Installing test1.
-    Unused options for test1: 'option2' 'option1'.
-    <BLANKLINE>
-
-
