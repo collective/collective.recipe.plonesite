@@ -19,7 +19,7 @@ class Recipe(object):
         self.options['scripts'] = ''
         options['bin-directory'] = buildout['buildout']['bin-directory']
         self.site_id = options['site-id']
-        self.site_replace = options['site-replace']
+        self.site_replace = options.get('site-replace', 'false')
         self.admin_user = options['admin-user']
         self.products_initial = options.get('products-initial', "").split()
         self.profiles_initial = options.get('profiles-initial', "").split()

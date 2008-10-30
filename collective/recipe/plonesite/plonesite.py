@@ -90,10 +90,18 @@ products = getProductsWithSpace(options.products)
 profiles_initial = getProductsWithSpace(options.profiles_initial)
 profiles = getProductsWithSpace(options.profiles)
 
+truisms = [
+    'yes',
+    'on',
+    'true',
+    'sure',
+    'ok',
+]
+
 def create(site_id, products):
     oids = app.objectIds()
     if site_id in oids:
-        if site_replace == "on" and hasattr(app, site_id):
+        if site_replace.lower() in truisms and hasattr(app, site_id):
             try:
                 app.manage_delObjects([site_id,])
             except LinkIntegrityNotificationException:

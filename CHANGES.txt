@@ -1,5 +1,11 @@
-0.3 (xxxx-xx-xx)
+0.3 (2008-10-30)
 ================
+
+- Added site-replace option to the readme
+  [claytron]
+
+- The replace-site option is no longer required
+  [claytron]
 
 0.2 (2008-10-30)
 ================
