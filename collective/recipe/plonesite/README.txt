@@ -24,3 +24,6 @@ instance
 
 zeoserver
     The name of the zeoserver part that should be used.  This is only required if you are using a zope/zeo setup. Default: not set
+
+site-replace
+    remove the site and re-add it. Default: off
