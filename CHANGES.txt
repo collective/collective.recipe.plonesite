@@ -8,6 +8,9 @@
   the site-id option.
   [ajung]
 
+- Fixed error with uninitialized variable
+  [jeffk]
+
 - Add buildout recipe option site-replace, defaults to
   off. Use with site-id.
 
