@@ -11,7 +11,7 @@ products-initial
     A list of products to quickinstall just after initial site creation
 
 profiles-inital
-    A list of GenericSetup profiles to run just after initial site creation.  Profiles have the following format: <package_name>:<profile> (e.g. my.package:default)
+    A list of GenericSetup profiles to run just after initial site creation.  Profiles have the following format: <package_name>:<profile> (e.g. my.package:default).  The profile can also be prepended with the 'profile-' if you so choose (e.g. profile-my.package:default).
 
 products
     A list of products to quickinstall each time buildout is run
@@ -27,3 +27,8 @@ zeoserver
 
 site-replace
     Replace any existing plone site named site-id. Default: false
+
+enabled
+    Option to start up the instance/zeoserver.  Default: true.  This can be a useful option from the command line if you do not want to start up Zope, but still want to run the complete buildout.
+    
+    $ bin/buildout -Nv plonesite:enabled=false

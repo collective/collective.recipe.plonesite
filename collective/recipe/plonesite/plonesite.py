@@ -90,18 +90,21 @@ products = getProductsWithSpace(options.products)
 profiles_initial = getProductsWithSpace(options.profiles_initial)
 profiles = getProductsWithSpace(options.profiles)
 
-truisms = [
+TRUISMS = [
     'yes',
     'on',
     'true',
     'sure',
     'ok',
+    '1',
 ]
 
 def create(site_id, products):
     oids = app.objectIds()
     if site_id in oids:
-        if site_replace.lower() in truisms and hasattr(app, site_id):
+        # XXX make the site_replace opt a Boolean, handle the TRUISM in
+        # the recipe
+        if site_replace.lower() in TRUISMS and hasattr(app, site_id):
             try:
                 app.manage_delObjects([site_id,])
             except LinkIntegrityNotificationException:
@@ -132,7 +135,8 @@ def create(site_id, products):
     stool = plone.portal_setup
     print "Running profiles: %s" % profiles_initial
     for profile in profiles_initial:
-        profile = "profile-%s" % profile
+        if not profile.startswith('profile-'):
+            profile = "profile-%s" % profile
         stool.runAllImportStepsFromProfile(profile)
     # commit the transaction
     transaction.commit()
@@ -167,7 +171,8 @@ if profiles:
     print "Running profiles: %s" % profiles
     stool = plone.portal_setup
     for profile in profiles:
-        profile = "profile-%s" % profile
+        if not profile.startswith('profile-'):
+            profile = "profile-%s" % profile
         stool.runAllImportStepsFromProfile(profile)
     transaction.commit()
 noSecurityManager()

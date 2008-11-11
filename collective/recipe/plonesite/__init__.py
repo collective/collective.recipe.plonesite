@@ -6,6 +6,15 @@ import sys
 import subprocess
 import pkg_resources
 
+TRUISMS = [
+    'yes',
+    'on',
+    'true',
+    'sure',
+    'ok',
+    '1',
+]
+
 class Recipe(object):
     """zc.buildout recipe"""
 
@@ -18,6 +27,8 @@ class Recipe(object):
         # suppress script generation.
         self.options['scripts'] = ''
         options['bin-directory'] = buildout['buildout']['bin-directory']
+        
+        # all the options that will be passed on to the 'run' script
         self.site_id = options['site-id']
         self.site_replace = options.get('site-replace', 'false')
         self.admin_user = options['admin-user']
@@ -26,6 +37,17 @@ class Recipe(object):
         self.products = options.get('products', "").split()
         self.profiles = options.get('profiles', "").split()
         options['args'] = self.createArgs()
+        
+        # We can disable the starting of zope and zeo.  useful from the
+        # command line:
+        # $ bin/buildout -v plonesite:enabled=false
+        enabled_option = options.get('enabled', 'true').lower()
+        self.enabled = False
+        if enabled_option in TRUISMS:
+            self.enabled = True
+        
+        # figure out if we need a zeo server started, and if it's on windows
+        # this code was borrowed from plone.recipe.runscript
         is_win = sys.platform[:3].lower() == "win"
         instance = buildout[options["instance"]]
         instance_home = instance['location']
@@ -43,23 +65,29 @@ class Recipe(object):
             options['zeo-script'] = zeo_script
 
     def install(self):
-        """Installer"""
+        """
+        1. Start up the zeoserver if it exists
+        2. Run the script
+        3. stop the zeoserver if it exists
+        """
         options = self.options
+        # XXX is this needed?
         location = options['location']
-        # start the zeo if it exists
-        if self.zeoserver:
-            zeo_cmd = "%(bin-directory)s/%(zeo-script)s" % options
-            zeo_start = "%s start" % zeo_cmd
-            subprocess.call(zeo_start.split())
-        # XXX This seems wrong...
-        options['script'] = pkg_resources.resource_filename(__name__, 'plonesite.py')
-        # run the script
-        cmd = "%(bin-directory)s/%(instance-script)s run %(script)s %(args)s" % options
-        subprocess.call(cmd.split())
-        # stop the zeo
-        if self.zeoserver:
-            zeo_stop = "%s stop" % zeo_cmd
-            subprocess.call(zeo_stop.split())
+        if self.enabled:
+            # start the zeo if it exists
+            if self.zeoserver:
+                zeo_cmd = "%(bin-directory)s/%(zeo-script)s" % options
+                zeo_start = "%s start" % zeo_cmd
+                subprocess.call(zeo_start.split())
+            # XXX This seems wrong...
+            options['script'] = pkg_resources.resource_filename(__name__, 'plonesite.py')
+            # run the script
+            cmd = "%(bin-directory)s/%(instance-script)s run %(script)s %(args)s" % options
+            subprocess.call(cmd.split())
+            # stop the zeo
+            if self.zeoserver:
+                zeo_stop = "%s stop" % zeo_cmd
+                subprocess.call(zeo_stop.split())
         return location
 
     def update(self):

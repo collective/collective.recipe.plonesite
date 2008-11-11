@@ -1,5 +1,17 @@
-0.4 (xxxx-xx-xx)
+0.4 (2008-11-11)
 ================
+
+- Added a 'enabled' option so that you can switch the part
+  off from the command line. (buildout:parts-=plonesite doesn't
+  work yet)
+  [claytron]
+
+- Change the script so that profiles prefixed with 'profile-' can
+  also be given.
+  [claytron]
+
+- Added some docs to the recipe
+  [claytron]
 
 0.3 (2008-10-30)
 ================
