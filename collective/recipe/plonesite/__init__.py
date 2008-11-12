@@ -30,7 +30,7 @@ class Recipe(object):
         
         # all the options that will be passed on to the 'run' script
         self.site_id = options['site-id']
-        self.site_replace = options.get('site-replace', 'false')
+        self.site_replace = options.get('site-replace', '').lower() in TRUISMS
         self.admin_user = options['admin-user']
         self.products_initial = options.get('products-initial', "").split()
         self.profiles_initial = options.get('profiles-initial', "").split()
@@ -41,10 +41,7 @@ class Recipe(object):
         # We can disable the starting of zope and zeo.  useful from the
         # command line:
         # $ bin/buildout -v plonesite:enabled=false
-        enabled_option = options.get('enabled', 'true').lower()
-        self.enabled = False
-        if enabled_option in TRUISMS:
-            self.enabled = True
+        self.enabled = options.get('enabled', 'true').lower() in TRUISMS
         
         # figure out if we need a zeo server started, and if it's on windows
         # this code was borrowed from plone.recipe.runscript
@@ -99,7 +96,9 @@ class Recipe(object):
         """
         args = []
         args.append("--site-id=%s" % self.site_id)
-        args.append("--site-replace=%s" % self.site_replace)
+        # only pass the site replace option if it's True
+        if self.site_replace:
+            args.append("--site-replace")
         args.append("--admin-user=%s" % self.admin_user)
         def createArgList(arg_name, arg_list):
             if arg_list:

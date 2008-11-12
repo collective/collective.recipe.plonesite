@@ -1,3 +1,18 @@
+0.5 (2008-11-11)
+================
+
+- Fixed a bug where already installed Products would not be re-installed
+  [claytron]
+
+- Added example buildout config and updated the READMEs
+  [claytron]
+
+- Re-factored the plonesite.py script
+  [claytron]
+
+- A dash of PEP 8
+  [claytron]
+
 0.4 (2008-11-11)
 ================
 
