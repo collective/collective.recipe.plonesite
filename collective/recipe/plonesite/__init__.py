@@ -31,7 +31,7 @@ class Recipe(object):
         # all the options that will be passed on to the 'run' script
         self.site_id = options['site-id']
         self.site_replace = options.get('site-replace', '').lower() in TRUISMS
-        self.admin_user = options['admin-user']
+        self.admin_user = options.get('admin-user', 'admin')
         self.products_initial = options.get('products-initial', "").split()
         self.profiles_initial = options.get('profiles-initial', "").split()
         self.products = options.get('products', "").split()
