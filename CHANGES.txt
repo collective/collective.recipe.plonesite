@@ -1,3 +1,9 @@
+(svn/unreleased)
+
+- Make admin-user configuration option truly optional per the documentation.  
+  Fallback to 'admin' which would be the common default per ZopeSkel's
+  plone3_buildout template [andrewb]
+
 0.5 (2008-11-11)
 ================
 
