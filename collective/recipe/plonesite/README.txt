@@ -35,6 +35,12 @@ enabled
     
     $ bin/buildout -Nv plonesite:enabled=false
 
+pre-extras
+    An absolute path to a file with python code that will be evaluated before running Quickinstaller and GenericSetup profiles.  Multiple files can be given.  Two variables will be available to you.  The app variable is the zope root.  The portal variable is the plone site as defined by the site-id option. NOTE: file path cannot contain spaces. Default: not set
+
+pre-extras
+    An absolute path to a file with python code that will be evaluated after running Quickinstaller and GenericSetup profiles.  Multiple files can be given.  Two variables will be available to you.  The app variable is the zope root.  The portal variable is the plone site as defined by the site-id option. NOTE: file path cannot contain spaces. Default: not set
+
 Example
 =======
 
@@ -77,3 +83,6 @@ Here is an example buildout.cfg with the plonesite recipe::
     profiles = 
         my.package:default
         my.other.package:default
+    post-extras =
+        ${buildout:directory}/my_script.py
+        ${buildout:directory}/my_other_script.py

@@ -1,8 +1,16 @@
-(svn/unreleased)
+0.6 (2008-12-16)
+================
 
 - Make admin-user configuration option truly optional per the documentation.  
   Fallback to 'admin' which would be the common default per ZopeSkel's
   plone3_buildout template [andrewb]
+
+- Added new options pre-extras and post-extras.  The two options are files that
+  can be run before and after the quickinstaller and profiles have been run.
+  [claytron]
+
+- Add condition so that the script can be used on older versions of plone
+  [claytron]
 
 0.5 (2008-11-11)
 ================

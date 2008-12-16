@@ -8,6 +8,7 @@ import pkg_resources
 
 TRUISMS = [
     'yes',
+    'y',
     'on',
     'true',
     'sure',
@@ -21,7 +22,7 @@ class Recipe(object):
     def __init__(self, buildout, name, options):
         self.buildout, self.name, self.options = buildout, name, options
         options['location'] = os.path.join(
-            buildout['buildout']['bin-directory'],
+            buildout['buildout']['parts-directory'],
             self.name,
             )
         # suppress script generation.
@@ -36,6 +37,8 @@ class Recipe(object):
         self.profiles_initial = options.get('profiles-initial', "").split()
         self.products = options.get('products', "").split()
         self.profiles = options.get('profiles', "").split()
+        self.post_extras = options.get('post-extras', "").split()
+        self.pre_extras = options.get('pre-extras', "").split()
         options['args'] = self.createArgs()
         
         # We can disable the starting of zope and zeo.  useful from the
@@ -89,7 +92,7 @@ class Recipe(object):
 
     def update(self):
         """Updater"""
-        pass
+        self.install()
 
     def createArgs(self):
         """Helper method to create an argument list
@@ -104,6 +107,8 @@ class Recipe(object):
             if arg_list:
                 for arg in arg_list:
                     args.append("%s=%s" % (arg_name, arg))
+        createArgList('--pre-extras', self.pre_extras)
+        createArgList('--post-extras', self.post_extras)
         createArgList('--products-initial', self.products_initial)
         createArgList('--products', self.products)
         createArgList('--profiles-initial', self.profiles_initial)

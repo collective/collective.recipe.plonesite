@@ -1,33 +1,17 @@
-"""
-Options are as follows:
-
-The id of the plone site to be created.
-    --site-id=Plone
-Replace any existing plone site named site-id. Defaults to off.
-    --site-replace=off
-The user to run the script as (needs to be a Manager at the root)
-    --admin-user=admin
-Add one --products argument per product you want to quickinstall when 
-initially creating the site.
-    --products-initial=MyProductName
-Add one --products argument per product you want to quickinstall upon
-every run of buildout.
-    --products=MyProductName
-Add one --profiles-initial argumanet per profile you want to run after the
-quickinstall has run when initially creating the site.
-    --profiles-inital=my.package:default
-Add one --profiles argument per profile you want to run after the
-quickinstall has run each time the buildout has been run.
-    --profiles=my.package:default
-"""
-
+import os
 from datetime import datetime
+import zc.buildout
 import transaction
 from AccessControl.SecurityManagement import newSecurityManager
 from AccessControl.SecurityManagement import noSecurityManager
 from Testing import makerequest
 from optparse import OptionParser
-from plone.app.linkintegrity.exceptions import LinkIntegrityNotificationException
+pre_plone3 = False
+try:
+    from plone.app.linkintegrity.exceptions import LinkIntegrityNotificationException
+except ImportError:
+    # we are using a release prior to 3.x
+    pre_plone3 = True
 
 # the madness with the comma is a result of product names with spaces
 def getProductsWithSpace(opts):
@@ -59,10 +43,13 @@ def create(app, site_id, products_initial, profiles_initial, site_replace):
     oids = app.objectIds()
     if site_id in oids:
         if site_replace and hasattr(app, site_id):
-            try:
+            if pre_plone3:
                 app.manage_delObjects([site_id,])
-            except LinkIntegrityNotificationException:
-                pass
+            else:
+                try:
+                    app.manage_delObjects([site_id,])
+                except LinkIntegrityNotificationException:
+                    pass
             transaction.commit()
             print "Removed existing Plone Site"
             oids = app.objectIds()
@@ -87,6 +74,8 @@ def main(app, parser):
     site_id = options.site_id
     site_replace = options.site_replace
     admin_user = options.admin_user
+    post_extras = options.post_extras
+    pre_extras = options.pre_extras
     
     # normalize our product/profile lists
     products_initial = getProductsWithSpace(options.products_initial)
@@ -103,16 +92,30 @@ def main(app, parser):
         newSecurityManager(None, user)
         print "Retrieved the admin user"
     else:
-        print "Retrieving admin user failed"
-    # create the plone site
+        raise zc.buildout.UserError('The admin-user specified does not exist')
+    # create the plone site if it doesn't exist
     create(app, site_id, products_initial, profiles_initial, site_replace)
-    # run profiles or install products
-    if products or profiles:
-        plone = getattr(app, site_id)
+    portal = getattr(app, site_id)
+    
+    def runExtras(script_path):
+        if os.path.exists(script_path):
+            extras_file = open(script_path, 'r')
+            to_run = extras_file.read().replace("\r\n", "\n")
+            exec(to_run)
+            extras_file.close()
+        raise zc.buildout.UserError('The path to the pre-extras script does not exist')
+    
+    for pre_extra in pre_extras:
+        runExtras(pre_extra)
+    
     if products:
-        quickinstall(plone, products)
+        quickinstall(portal, products)
     if profiles:
-        runProfiles(plone, profiles)
+        runProfiles(portal, profiles)
+    
+    for post_extra in post_extras:
+        runExtras(post_extra)
+    
     # commit the transaction
     transaction.commit()
     noSecurityManager()
@@ -134,4 +137,8 @@ if __name__ == '__main__':
                       dest="profiles_initial", action="append", default=[])
     parser.add_option("-x", "--profiles",
                       dest="profiles", action="append", default=[])
+    parser.add_option("-e", "--post-extras",
+                      dest="post_extras", action="append", default=[])
+    parser.add_option("-b", "--pre-extras",
+                      dest="pre_extras", action="append", default=[])
     main(app, parser)
