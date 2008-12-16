@@ -97,16 +97,15 @@ def main(app, parser):
     create(app, site_id, products_initial, profiles_initial, site_replace)
     portal = getattr(app, site_id)
     
-    def runExtras(script_path):
+    def runExtras(portal, script_path):
         if os.path.exists(script_path):
-            extras_file = open(script_path, 'r')
-            to_run = extras_file.read().replace("\r\n", "\n")
-            exec(to_run)
-            extras_file.close()
-        raise zc.buildout.UserError('The path to the pre-extras script does not exist')
+            execfile(script_path)
+        else:
+            msg = 'The path to the extras script does not exist: %s'
+            raise zc.buildout.UserError(msg % script_path)
     
     for pre_extra in pre_extras:
-        runExtras(pre_extra)
+        runExtras(portal, pre_extra)
     
     if products:
         quickinstall(portal, products)
@@ -114,7 +113,7 @@ def main(app, parser):
         runProfiles(portal, profiles)
     
     for post_extra in post_extras:
-        runExtras(post_extra)
+        runExtras(portal, post_extra)
     
     # commit the transaction
     transaction.commit()
