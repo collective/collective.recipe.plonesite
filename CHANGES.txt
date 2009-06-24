@@ -1,6 +1,8 @@
-0.8 (XXXX-XX-XX)
+0.8 (2009-06-24)
 ================
 
+- Subversion 1.6 and setuptools are not friends yet. Fixed upload.
+  [claytron]
 
 0.7 (2009-06-23)
 ================
