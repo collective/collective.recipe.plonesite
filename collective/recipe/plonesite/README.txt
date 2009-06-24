@@ -85,4 +85,5 @@ Here is an example buildout.cfg with the plonesite recipe::
         my.other.package:default
     post-extras =
         ${buildout:directory}/my_script.py
+    pre-extras =
         ${buildout:directory}/my_other_script.py

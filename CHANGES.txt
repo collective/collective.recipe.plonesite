@@ -1,8 +1,11 @@
-0.7 (xxxx-xx-xx)
+0.7 (2009-06-23)
 ================
 
 - Clarification to docs.  Cleaning up copy/paste error to post-extras
   [andrewb]
+
+- Fixed the instance option so that it defaults to 'instance' properly
+  [claytron]
 
 0.6 (2008-12-16)
 ================

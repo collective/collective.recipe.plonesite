@@ -49,7 +49,8 @@ class Recipe(object):
         # figure out if we need a zeo server started, and if it's on windows
         # this code was borrowed from plone.recipe.runscript
         is_win = sys.platform[:3].lower() == "win"
-        instance = buildout[options["instance"]]
+        # grab the 'instance' option and default to 'instance' if it does not exist
+        instance = buildout[options.get('instance', 'instance')]
         instance_home = instance['location']
         instance_script = os.path.basename(instance_home)
         if is_win:
