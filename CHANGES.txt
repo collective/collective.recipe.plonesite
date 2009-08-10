@@ -1,5 +1,9 @@
-0.9 (XXXX-XX-XX)
+0.9 (2009-08-10)
 ================
+
+- Fixed the site-id option so that it defaults to 'Plone' properly.
+  Thanks to aclark for the bug report.
+  [claytron]
 
 0.8 (2009-06-24)
 ================
