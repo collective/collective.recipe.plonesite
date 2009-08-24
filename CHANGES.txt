@@ -9,7 +9,7 @@
 0.9 (2009-08-10)
 ================
 
-- Fixed the site-id option so that it defaults to 'Plone' properly.
+- Fixed the ``site-id`` option so that it defaults to ``Plone`` properly.
   Thanks to aclark for the bug report.
   [claytron]
 
@@ -25,18 +25,18 @@
 - Clarification to docs.  Cleaning up copy/paste error to post-extras
   [andrewb]
 
-- Fixed the instance option so that it defaults to 'instance' properly
+- Fixed the ``instance`` option so that it defaults to ``instance`` properly
   [claytron]
 
 0.6 (2008-12-16)
 ================
 
-- Make admin-user configuration option truly optional per the documentation.  
-  Fallback to 'admin' which would be the common default per ZopeSkel's
+- Make ``admin-user`` configuration option truly optional per the documentation.  
+  Fallback to ``admin`` which would be the common default per ZopeSkel's
   plone3_buildout template
   [andrewb]
 
-- Added new options pre-extras and post-extras.  The two options are files that
+- Added new options ``pre-extras`` and ``post-extras``.  The two options are files that
   can be run before and after the quickinstaller and profiles have been run.
   [claytron]
 
@@ -52,7 +52,7 @@
 - Added example buildout config and updated the READMEs
   [claytron]
 
-- Re-factored the plonesite.py script
+- Re-factored the ``plonesite.py`` script
   [claytron]
 
 - A dash of PEP 8
@@ -61,12 +61,12 @@
 0.4 (2008-11-11)
 ================
 
-- Added a 'enabled' option so that you can switch the part
-  off from the command line. (buildout:parts-=plonesite doesn't
+- Added a ``enabled`` option so that you can switch the part
+  off from the command line. (``buildout:parts-=plonesite`` doesn't
   work yet)
   [claytron]
 
-- Change the script so that profiles prefixed with 'profile-' can
+- Change the script so that profiles prefixed with ``profile-`` can
   also be given.
   [claytron]
 
@@ -76,10 +76,10 @@
 0.3 (2008-10-30)
 ================
 
-- Added site-replace option to the readme
+- Added ``site-replace`` option to the readme
   [claytron]
 
-- The replace-site option is no longer required
+- The ``site-replace`` option is no longer required
   [claytron]
 
 0.2 (2008-10-30)
@@ -89,20 +89,20 @@
   which is helpful if you need to re-run new instances
   over and over again e.g. for migration purposes. If you
   need a fixed site id then explictely set the id using
-  the site-id option.
+  the ``site-id`` option.
   [ajung]
 
 - Fixed error with uninitialized variable
   [jeffk]
 
 - Add buildout recipe option site-replace, defaults to
-  off. Use with site-id.
+  off. Use with ``site-id``.
 
-  New recipe option site-replace = on will remove any
-  existing object in app named site-id. A new plone site
+  New recipe option ``site-replace = on`` will remove any
+  existing object in app named ``site-id``. A new plone site
   will be created to replace it.
 
-  Default option setting site-replace = off will not remove
+  Default option setting ``site-replace = off`` will not remove
   existing objects in app named site-id.
   [jeffk]
 

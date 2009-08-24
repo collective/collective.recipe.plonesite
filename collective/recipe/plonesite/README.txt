@@ -1,7 +1,7 @@
 Options
 =======
 
-NOTE: Profiles have the following format: <package_name>:<profile> (e.g. my.package:default).  The profile can also be prepended with the 'profile-' if you so choose (e.g. profile-my.package:default).
+NOTE: Profiles have the following format: ``<package_name>:<profile>`` (e.g. ``my.package:default``).  The profile can also be prepended with the ``profile-`` if you so choose (e.g. ``profile-my.package:default``).
 
 site-id
     The id of the Plone site that the script will create.  This will also be used to update the site once created.  Default: Plone
