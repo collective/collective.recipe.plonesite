@@ -16,6 +16,10 @@ TRUISMS = [
     '1',
 ]
 
+def system(c):
+    if os.system(c):
+        raise SystemError("Failed", c)
+
 class Recipe(object):
     """zc.buildout recipe"""
 
@@ -64,31 +68,41 @@ class Recipe(object):
                 zeo_home = buildout[self.zeoserver]['location']
                 zeo_script = os.path.basename(zeo_home)
             options['zeo-script'] = zeo_script
+        self.before_install = options.get('before-install')
+        self.after_install = options.get('after-install')
 
     def install(self):
         """
-        1. Start up the zeoserver if it exists
-        2. Run the script
-        3. stop the zeoserver if it exists
+        1. Run the before-install command if specified
+        2. Start up the zeoserver if specified
+        3. Run the script
+        4. Stop the zeoserver if specified
+        5. Run the after-install command if specified
         """
         options = self.options
         # XXX is this needed?
         location = options['location']
         if self.enabled:
-            # start the zeo if it exists
+
+            if self.before_install:
+                system(self.before_install)
             if self.zeoserver:
                 zeo_cmd = "%(bin-directory)s/%(zeo-script)s" % options
                 zeo_start = "%s start" % zeo_cmd
                 subprocess.call(zeo_start.split())
+
             # XXX This seems wrong...
             options['script'] = pkg_resources.resource_filename(__name__, 'plonesite.py')
             # run the script
             cmd = "%(bin-directory)s/%(instance-script)s run %(script)s %(args)s" % options
             subprocess.call(cmd.split())
-            # stop the zeo
+
             if self.zeoserver:
                 zeo_stop = "%s stop" % zeo_cmd
                 subprocess.call(zeo_stop.split())
+            if self.after_install:
+                system(self.after_install)
+
         return location
 
     def update(self):

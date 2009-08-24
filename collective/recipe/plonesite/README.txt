@@ -27,6 +27,12 @@ instance
 zeoserver
     The name of the zeoserver part that should be used.  This is only required if you are using a zope/zeo setup. Default: not set
 
+before-install
+    A system command to execute before installing Plone.  Optional.  You could use this to start a Supervisor daemon to launch ZEO, instead of launching ZEO directly.  You can use this option in place of the zeoserver option.
+
+after-install
+    A system command to execute after installing Plone.  Optional.
+
 site-replace
     Replace any existing plone site named site-id. Default: false
 

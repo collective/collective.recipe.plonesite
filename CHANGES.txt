@@ -1,3 +1,11 @@
+1.0 (2009-08-24)
+================
+
+- Added a ``before-install`` and ``after-install`` option to the recipe. this
+  allows you to use something like supervisor to launch the processes.
+  Thanks to Shane Hathaway for the patch.
+  [claytron]
+
 0.9 (2009-08-10)
 ================
 
