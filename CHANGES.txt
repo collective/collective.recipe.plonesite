@@ -1,7 +1,10 @@
 1.1 (XXXX-XX-XX)
 ================
 
+1.1 - Unreleased
+================
 
+- Add support for Plone4 [toutpt]
 
 1.0 (2009-08-24)
 ================

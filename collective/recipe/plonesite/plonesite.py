@@ -6,6 +6,7 @@ from AccessControl.SecurityManagement import newSecurityManager
 from AccessControl.SecurityManagement import noSecurityManager
 from Testing import makerequest
 from optparse import OptionParser
+from Products.PloneTestCase import version
 pre_plone3 = False
 try:
     from plone.app.linkintegrity.exceptions import LinkIntegrityNotificationException
@@ -58,8 +59,12 @@ def create(app, site_id, products_initial, profiles_initial, site_replace):
             return
     # actually add in Plone
     if site_id not in oids:
-        factory = app.manage_addProduct['CMFPlone']
-        factory.addPloneSite(site_id, create_userfolder=1)
+        if version.PLONE40:
+            from Products.CMFPlone.factory import addPloneSite
+            addPloneSite(app, site_id)
+        else:
+            factory = app.manage_addProduct['CMFPlone']
+            factory.addPloneSite(site_id, create_userfolder=1)
         print "Added Plone Site"
     # install some products
     plone = getattr(app, site_id)
@@ -76,7 +81,7 @@ def main(app, parser):
     admin_user = options.admin_user
     post_extras = options.post_extras
     pre_extras = options.pre_extras
-    
+
     # normalize our product/profile lists
     products_initial = getProductsWithSpace(options.products_initial)
     products = getProductsWithSpace(options.products)
@@ -96,25 +101,25 @@ def main(app, parser):
     # create the plone site if it doesn't exist
     create(app, site_id, products_initial, profiles_initial, site_replace)
     portal = getattr(app, site_id)
-    
+
     def runExtras(portal, script_path):
         if os.path.exists(script_path):
             execfile(script_path)
         else:
             msg = 'The path to the extras script does not exist: %s'
             raise zc.buildout.UserError(msg % script_path)
-    
+
     for pre_extra in pre_extras:
         runExtras(portal, pre_extra)
-    
+
     if products:
         quickinstall(portal, products)
     if profiles:
         runProfiles(portal, profiles)
-    
+
     for post_extra in post_extras:
         runExtras(portal, post_extra)
-    
+
     # commit the transaction
     transaction.commit()
     noSecurityManager()
