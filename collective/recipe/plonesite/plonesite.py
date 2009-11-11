@@ -6,10 +6,14 @@ from AccessControl.SecurityManagement import newSecurityManager
 from AccessControl.SecurityManagement import noSecurityManager
 from Testing import makerequest
 from optparse import OptionParser
-from Products.PloneTestCase import version
+try:
+    from Products.PloneTestCase import version
+except ImportError:
+    version = None
 pre_plone3 = False
 try:
-    from plone.app.linkintegrity.exceptions import LinkIntegrityNotificationException
+    from plone.app.linkintegrity.exceptions import \
+        LinkIntegrityNotificationException
 except ImportError:
     # we are using a release prior to 3.x
     pre_plone3 = True
@@ -59,12 +63,14 @@ def create(app, site_id, products_initial, profiles_initial, site_replace):
             return
     # actually add in Plone
     if site_id not in oids:
-        if version.PLONE40:
+        if version is not None and version.PLONE40:
             from Products.CMFPlone.factory import addPloneSite
             addPloneSite(app, site_id)
         else:
             factory = app.manage_addProduct['CMFPlone']
             factory.addPloneSite(site_id, create_userfolder=1)
+        # commit the new site to the database
+        transaction.commit()
         print "Added Plone Site"
     # install some products
     plone = getattr(app, site_id)

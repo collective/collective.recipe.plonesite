@@ -1,8 +1,9 @@
-1.1 (XXXX-XX-XX)
+1.1 (2009-11-10)
 ================
 
-1.1 - Unreleased
-================
+- Make sure to commit the transaction after adding the plone site to
+  avoid some strange behavior.
+  [claytron]
 
 - Add support for Plone4 [toutpt]
 
