@@ -1,6 +1,10 @@
 1.2 (xxxx-xx-xx)
 ================
 
+- Adjusted the support for Plone4 since the addPloneSite() has 
+  changed slightly.
+  [pelle]
+
 1.1 (2009-11-10)
 ================
 

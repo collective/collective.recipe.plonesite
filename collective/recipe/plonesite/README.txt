@@ -93,3 +93,28 @@ Here is an example buildout.cfg with the plonesite recipe::
         ${buildout:directory}/my_script.py
     pre-extras =
         ${buildout:directory}/my_other_script.py
+
+
+Example with Plone 4 content enabled
+====================================
+    
+Here is another example buildout.cfg with the plone4site recipe::
+    
+    [buildout]
+    parts = 
+        -- ibid --
+        plone4site
+    
+    -- ibid --
+    
+    [plone4site]
+    recipe = collective.recipe.plonesite
+    site-id = test
+    instance = instance
+    zeoserver = zeoserver
+    profiles-initial = 
+        Products.CMFPlone:plone-content #create default plone content like News, Events...
+        my.package:initial
+    profiles = 
+        my.package:default
+        my.other.package:default
