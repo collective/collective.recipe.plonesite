@@ -1,2 +1,6 @@
 Clayton Parker [claytron], Author
+Andrew Burkhalter [andrewb]
 JeanMichel FRANCOIS [toutpt]
+Andreas Jung [ajung]
+Jeff Kowalczyk [jeffk]
+Pelle Kroegholt [pelle]
