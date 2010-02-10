@@ -1,7 +1,9 @@
 Options
 =======
 
-NOTE: Profiles have the following format: ``<package_name>:<profile>`` (e.g. ``my.package:default``).  The profile can also be prepended with the ``profile-`` if you so choose (e.g. ``profile-my.package:default``).
+.. [1] Profiles have the following format: ``<package_name>:<profile>`` (e.g. ``my.package:default``).  The profile can also be prepended with the ``profile-`` if you so choose (e.g. ``profile-my.package:default``).
+
+.. [2] The product name is typically **not** the package name such as `Products.MyProduct`, but just the product name `MyProduct`. Quickest way to find out the name that is expected is to 'inspect' the Quickinstaller page and see what value it is passing in.
 
 site-id
     The id of the Plone site that the script will create.  This will also be used to update the site once created.  Default: Plone
@@ -10,16 +12,16 @@ admin-user
     The id of an admin user that will be used as the 'Manager'.  Default: admin
 
 products-initial
-    A list of products to quickinstall just after initial site creation
+    A list of products to quickinstall just after initial site creation. See above for information about the product name format [2]_.
 
 profiles-inital
-    A list of GenericSetup profiles to run just after initial site creation
+    A list of GenericSetup profiles to run just after initial site creation. See above for informaion on the expected profile id format [1]_.
 
 products
-    A list of products to quickinstall each time buildout is run
+    A list of products to quickinstall each time buildout is run. See above for information about the product name format [2]_.
 
 profiles
-    A list of GenericSetup profiles to run each time buildout is run
+    A list of GenericSetup profiles to run each time buildout is run. See above for informaion on the expected profile id format [1]_.
 
 instance
     The name of the instance that will run the script. Default: instance
