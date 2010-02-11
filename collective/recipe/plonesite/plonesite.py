@@ -64,15 +64,21 @@ def create(app, site_id, products_initial, profiles_initial, site_replace):
     # actually add in Plone
     if site_id not in oids:
         if version is not None and version.PLONE40:
-            # we have to simulate the new zmi admin screen here - at least provide:
+            # we have to simulate the new zmi admin screen here - at
+            # least provide:
             # extension_ids
             # setup_content (plone default is currently 'true')
             from Products.CMFPlone.factory import addPloneSite
             extension_profiles = (
-                'plonetheme.classic:default', 
+                'plonetheme.classic:default',
                 'plonetheme.sunburst:default'
-            )
-            addPloneSite(app, site_id, extension_ids=extension_profiles, setup_content=False)
+                )
+            addPloneSite(
+                app,
+                site_id,
+                extension_ids=extension_profiles,
+                setup_content=False
+                )
         else:
             factory = app.manage_addProduct['CMFPlone']
             factory.addPloneSite(site_id, create_userfolder=1)
