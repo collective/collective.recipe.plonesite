@@ -3,4 +3,4 @@
 - JeanMichel FRANCOIS [toutpt]
 - Andreas Jung [ajung]
 - Jeff Kowalczyk [jeffk]
-- Pelle Kroegholt [pelle]
+- Pelle Krogholt [pelle]
