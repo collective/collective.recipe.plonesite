@@ -1,4 +1,4 @@
-1.3 (XXXX-XX-XX)
+1.3 (2010-02-11)
 ================
 
 - Use `setSite` in the `plonesite.py` script so that the component
@@ -23,7 +23,8 @@
   avoid some strange behavior.
   [claytron]
 
-- Add support for Plone4 [toutpt]
+- Add support for Plone4
+  [toutpt]
 
 1.0 (2009-08-24)
 ================
