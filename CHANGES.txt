@@ -1,6 +1,10 @@
 1.3 (XXXX-XX-XX)
 ================
 
+- Use `setSite` in the `plonesite.py` script so that the component
+  architecture gets initialized properly. This will allow the
+  installation of a product like `plone.app.dexterity`
+  [clayton]
 
 1.2 (2010-02-10)
 ================

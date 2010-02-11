@@ -1,5 +1,6 @@
 import os
 from datetime import datetime
+from zope.app.component.hooks import setSite
 import zc.buildout
 import transaction
 from AccessControl.SecurityManagement import newSecurityManager
@@ -120,6 +121,9 @@ def main(app, parser):
     # create the plone site if it doesn't exist
     create(app, site_id, products_initial, profiles_initial, site_replace)
     portal = getattr(app, site_id)
+    # set the site so that the component architecture will work
+    # properly
+    setSite(portal)
 
     def runExtras(portal, script_path):
         if os.path.exists(script_path):
