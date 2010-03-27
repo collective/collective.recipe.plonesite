@@ -1,6 +1,8 @@
 1.4 (XXXX-XX-XX)
 ================
 
+- Use `setSite` in the initial creation as well.
+  [claytron]
 
 1.3 (2010-02-11)
 ================

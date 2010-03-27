@@ -88,6 +88,9 @@ def create(app, site_id, products_initial, profiles_initial, site_replace):
         print "Added Plone Site"
     # install some products
     plone = getattr(app, site_id)
+    # set the site so that the component architecture will work
+    # properly
+    setSite(plone)
     if plone:
         quickinstall(plone, products_initial)
     # run GS profiles
