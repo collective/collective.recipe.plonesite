@@ -29,7 +29,11 @@ def runProfiles(plone, profiles):
     for profile in profiles:
         if not profile.startswith('profile-'):
             profile = "profile-%s" % profile
-        stool.runAllImportStepsFromProfile(profile)
+        if pre_plone3:
+            stool.setImportContext(profile)
+            stool.runAllImportSteps()
+        else:
+            stool.runAllImportStepsFromProfile(profile)
 
 def quickinstall(plone, products):
     print "Quick installing: %s" % products
@@ -90,7 +94,8 @@ def create(app, site_id, products_initial, profiles_initial, site_replace):
     plone = getattr(app, site_id)
     # set the site so that the component architecture will work
     # properly
-    setSite(plone)
+    if not pre_plone3:
+        setSite(portal)
     if plone:
         quickinstall(plone, products_initial)
     # run GS profiles
@@ -126,7 +131,8 @@ def main(app, parser):
     portal = getattr(app, site_id)
     # set the site so that the component architecture will work
     # properly
-    setSite(portal)
+    if not pre_plone3:
+        setSite(portal)
 
     def runExtras(portal, script_path):
         if os.path.exists(script_path):
