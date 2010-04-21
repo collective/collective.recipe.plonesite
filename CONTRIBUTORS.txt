@@ -4,3 +4,4 @@
 - Andreas Jung [ajung]
 - Jeff Kowalczyk [jeffk]
 - Pelle Krogholt [pelle]
+- Michael Davis [davismr]

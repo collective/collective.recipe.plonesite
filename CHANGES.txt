@@ -1,6 +1,9 @@
 1.4 (XXXX-XX-XX)
 ================
 
+- Enable GS profiles to work in plone 2.5
+  [davismr]
+
 - Use `setSite` in the initial creation as well.
   [claytron]
 
