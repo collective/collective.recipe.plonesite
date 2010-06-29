@@ -95,7 +95,7 @@ def create(app, site_id, products_initial, profiles_initial, site_replace):
     # set the site so that the component architecture will work
     # properly
     if not pre_plone3:
-        setSite(portal)
+        setSite(plone)
     if plone:
         quickinstall(plone, products_initial)
     # run GS profiles

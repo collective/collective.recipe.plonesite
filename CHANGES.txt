@@ -1,6 +1,10 @@
 1.4 (XXXX-XX-XX)
 ================
 
+- Use the 'plone' variable not 'portal' otherwise plonesite.py raises 
+  "NameError: global name 'portal' is not defined" on a new install.
+  [pelle]
+
 - Enable GS profiles to work in plone 2.5
   [davismr]
 
