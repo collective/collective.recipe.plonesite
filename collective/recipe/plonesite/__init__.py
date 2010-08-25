@@ -32,7 +32,7 @@ class Recipe(object):
         # suppress script generation.
         self.options['scripts'] = ''
         options['bin-directory'] = buildout['buildout']['bin-directory']
-        
+
         # all the options that will be passed on to the 'run' script
         self.site_id = options.get('site-id', 'Plone')
         self.site_replace = options.get('site-replace', '').lower() in TRUISMS
@@ -44,12 +44,12 @@ class Recipe(object):
         self.post_extras = options.get('post-extras', "").split()
         self.pre_extras = options.get('pre-extras', "").split()
         options['args'] = self.createArgs()
-        
+
         # We can disable the starting of zope and zeo.  useful from the
         # command line:
         # $ bin/buildout -v plonesite:enabled=false
         self.enabled = options.get('enabled', 'true').lower() in TRUISMS
-        
+
         # figure out if we need a zeo server started, and if it's on windows
         # this code was borrowed from plone.recipe.runscript
         is_win = sys.platform[:3].lower() == "win"
