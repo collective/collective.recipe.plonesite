@@ -1,6 +1,10 @@
 1.4 (XXXX-XX-XX)
 ================
 
+- Handle new zeoserver recipe on windows which changes the name of the
+  executable.
+  [claytron]
+
 - Force `sys.path` into the environment when doing a subprocess call.
   This fixes and issue where those calls would fail looking for certain
   eggs.

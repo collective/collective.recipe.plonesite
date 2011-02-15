@@ -63,7 +63,12 @@ class Recipe(object):
         self.zeoserver = options.get('zeoserver', False)
         if self.zeoserver:
             if is_win:
-                zeo_script = 'zeoservice.exe'
+                if os.path.exists(os.path.join(
+                    options['bin-directory'],
+                    'zeoservice.exe')):
+                    zeo_script = 'zeoservice.exe'
+                else:
+                    zeo_script = "%s_service.exe" % self.zeoserver
             else:
                 zeo_home = buildout[self.zeoserver]['location']
                 zeo_script = os.path.basename(zeo_home)
