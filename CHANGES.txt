@@ -5,11 +5,6 @@
   executable.
   [claytron]
 
-- Force `sys.path` into the environment when doing a subprocess call.
-  This fixes and issue where those calls would fail looking for certain
-  eggs.
-  [clayton]
-
 - Use the 'plone' variable not 'portal' otherwise plonesite.py raises 
   "NameError: global name 'portal' is not defined" on a new install.
   [pelle]

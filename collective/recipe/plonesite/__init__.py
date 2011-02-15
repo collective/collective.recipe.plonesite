@@ -88,27 +88,22 @@ class Recipe(object):
         # XXX is this needed?
         location = options['location']
         if self.enabled:
-            # Need to set the python path when using subprocess.call
-            # in some instances
-            ppath = os.environ.get('PYTHONPATH', '').split(":")
-            new_ppath = ":".join(ppath + sys.path)
-            os.environ['PYTHONPATH'] = new_ppath
             if self.before_install:
                 system(self.before_install)
             if self.zeoserver:
                 zeo_cmd = "%(bin-directory)s/%(zeo-script)s" % options
                 zeo_start = "%s start" % zeo_cmd
-                subprocess.call(zeo_start.split(), env=os.environ)
+                subprocess.call(zeo_start.split())
 
             # XXX This seems wrong...
             options['script'] = pkg_resources.resource_filename(__name__, 'plonesite.py')
             # run the script
             cmd = "%(bin-directory)s/%(instance-script)s run %(script)s %(args)s" % options
-            subprocess.call(cmd.split(), env=os.environ)
+            subprocess.call(cmd.split())
 
             if self.zeoserver:
                 zeo_stop = "%s stop" % zeo_cmd
-                subprocess.call(zeo_stop.split(), env=os.environ)
+                subprocess.call(zeo_stop.split())
             if self.after_install:
                 system(self.after_install)
 
