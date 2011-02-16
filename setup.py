@@ -30,8 +30,8 @@ long_description = (
     read('CHANGES.txt')
     + '\n' +
    'Download\n'
-    '********\n',
-    )
+    '********\n')
+
 entry_point = 'collective.recipe.plonesite:Recipe'
 entry_points = {"zc.buildout": ["default = %s" % entry_point]}
 
