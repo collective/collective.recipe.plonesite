@@ -104,18 +104,17 @@ Here is another example buildout.cfg with the plone4site recipe::
     
     [buildout]
     parts = 
-        -- ibid --
+        ...
         plone4site
-    
-    -- ibid --
     
     [plone4site]
     recipe = collective.recipe.plonesite
     site-id = test
     instance = instance
     zeoserver = zeoserver
+    # Create default plone content like News, Events...
     profiles-initial = 
-        Products.CMFPlone:plone-content #create default plone content like News, Events...
+        Products.CMFPlone:plone-content 
         my.package:initial
     profiles = 
         my.package:default
