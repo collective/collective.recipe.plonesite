@@ -19,9 +19,11 @@ except ImportError:
     # we are using a release prior to 3.x
     pre_plone3 = True
 
+
 # the madness with the comma is a result of product names with spaces
 def getProductsWithSpace(opts):
     return [x.replace(',', '') for x in opts]
+
 
 def runProfiles(plone, profiles):
     print "Running profiles: %s" % profiles
@@ -35,12 +37,12 @@ def runProfiles(plone, profiles):
         else:
             stool.runAllImportStepsFromProfile(profile)
 
+
 def quickinstall(plone, products):
     print "Quick installing: %s" % products
     qit = plone.portal_quickinstaller
     not_installed_ids = [
-        x['id'] for x in qit.listInstallableProducts(skipInstalled=1)
-    ]
+        x['id'] for x in qit.listInstallableProducts(skipInstalled=1)]
     installed_ids = [x['id'] for x in qit.listInstalledProducts()]
     installed_products = filter(installed_ids.count, products)
     not_installed = filter(not_installed_ids.count, products)
@@ -49,15 +51,16 @@ def quickinstall(plone, products):
     if not_installed_ids:
         qit.installProducts(not_installed)
 
+
 def create(app, site_id, products_initial, profiles_initial, site_replace):
     oids = app.objectIds()
     if site_id in oids:
         if site_replace and hasattr(app, site_id):
             if pre_plone3:
-                app.manage_delObjects([site_id,])
+                app.manage_delObjects([site_id, ])
             else:
                 try:
-                    app.manage_delObjects([site_id,])
+                    app.manage_delObjects([site_id, ])
                 except LinkIntegrityNotificationException:
                     pass
             transaction.commit()
@@ -76,13 +79,13 @@ def create(app, site_id, products_initial, profiles_initial, site_replace):
             from Products.CMFPlone.factory import addPloneSite
             extension_profiles = (
                 'plonetheme.classic:default',
-                'plonetheme.sunburst:default'
+                'plonetheme.sunburst:default',
                 )
             addPloneSite(
                 app,
                 site_id,
                 extension_ids=extension_profiles,
-                setup_content=False
+                setup_content=False,
                 )
         else:
             factory = app.manage_addProduct['CMFPlone']
@@ -101,6 +104,7 @@ def create(app, site_id, products_initial, profiles_initial, site_replace):
     # run GS profiles
     runProfiles(plone, profiles_initial)
     print "Finished"
+
 
 def main(app, parser):
     (options, args) = parser.parse_args()

@@ -16,9 +16,11 @@ TRUISMS = [
     '1',
 ]
 
+
 def system(c):
     if os.system(c):
         raise SystemError("Failed", c)
+
 
 class Recipe(object):
     """zc.buildout recipe"""
@@ -53,7 +55,8 @@ class Recipe(object):
         # figure out if we need a zeo server started, and if it's on windows
         # this code was borrowed from plone.recipe.runscript
         is_win = sys.platform[:3].lower() == "win"
-        # grab the 'instance' option and default to 'instance' if it does not exist
+        # grab the 'instance' option and default to 'instance' if it does not
+        # exist
         instance = buildout[options.get('instance', 'instance')]
         instance_home = instance['location']
         instance_script = os.path.basename(instance_home)
@@ -96,9 +99,11 @@ class Recipe(object):
                 subprocess.call(zeo_start.split())
 
             # XXX This seems wrong...
-            options['script'] = pkg_resources.resource_filename(__name__, 'plonesite.py')
+            options['script'] = pkg_resources.resource_filename(
+                __name__, 'plonesite.py')
             # run the script
-            cmd = "%(bin-directory)s/%(instance-script)s run %(script)s %(args)s" % options
+            cmd = ("%(bin-directory)s/%(instance-script)s run "
+                   "%(script)s %(args)s") % options
             subprocess.call(cmd.split())
 
             if self.zeoserver:
@@ -122,6 +127,7 @@ class Recipe(object):
         if self.site_replace:
             args.append("--site-replace")
         args.append("--admin-user=%s" % self.admin_user)
+
         def createArgList(arg_name, arg_list):
             if arg_list:
                 for arg in arg_list:

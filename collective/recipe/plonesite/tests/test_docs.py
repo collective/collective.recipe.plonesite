@@ -10,9 +10,11 @@ import zc.buildout.testing
 
 from zope.testing import doctest, renormalizing
 
-optionflags =  (doctest.ELLIPSIS |
-                doctest.NORMALIZE_WHITESPACE |
-                doctest.REPORT_ONLY_FIRST_FAILURE)
+optionflags = (
+    doctest.ELLIPSIS |
+    doctest.NORMALIZE_WHITESPACE |
+    doctest.REPORT_ONLY_FIRST_FAILURE)
+
 
 def setUp(test):
     zc.buildout.testing.buildoutSetUp(test)
@@ -22,6 +24,7 @@ def setUp(test):
 
     # Install any other recipes that should be available in the tests
     #zc.buildout.testing.install('collective.recipe.foobar', test)
+
 
 def test_suite():
     suite = unittest.TestSuite((

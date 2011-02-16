@@ -1,6 +1,9 @@
 1.4 (XXXX-XX-XX)
 ================
 
+- PEP8 cleanup
+  [claytron]
+
 - Handle new zeoserver recipe on windows which changes the name of the
   executable.
   [claytron]
