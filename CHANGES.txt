@@ -1,5 +1,8 @@
-1.5 (XXXX-XX-XX)
-================
+1.4.2 (XXXX-XX-XX)
+==================
+
+- Doc updates.
+  [claytron]
 
 1.4.1 (2011-02-15)
 ==================
@@ -17,31 +20,31 @@
   executable.
   [claytron]
 
-- Use the 'plone' variable not 'portal' otherwise plonesite.py raises 
-  "NameError: global name 'portal' is not defined" on a new install.
+- Use the ``plone`` variable not ``portal`` otherwise ``plonesite.py`` raises 
+  ``NameError: global name 'portal' is not defined`` on a new install.
   [pelle]
 
 - Enable GS profiles to work in plone 2.5
   [davismr]
 
-- Use `setSite` in the initial creation as well.
+- Use ``setSite`` in the initial creation as well.
   [claytron]
 
 1.3 (2010-02-11)
 ================
 
-- Use `setSite` in the `plonesite.py` script so that the component
+- Use ``setSite`` in the ``plonesite`.py` script so that the component
   architecture gets initialized properly. This will allow the
-  installation of a product like `plone.app.dexterity`
+  installation of a product like ``plone.app.dexterity``
   [clayton]
 
 1.2 (2010-02-10)
 ================
 
-- Update docs with info about how to add a `Product`
+- Update docs with info about how to add a ``Product``
   [claytron]
 
-- Adjusted the support for Plone4 since the addPloneSite() has 
+- Adjusted the support for Plone4 since the ``addPloneSite()`` has 
   changed slightly.
   [pelle]
 
