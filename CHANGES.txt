@@ -1,6 +1,9 @@
 1.4.2 (XXXX-XX-XX)
 ==================
 
+- Released to plone.org
+  [claytron]
+
 - Doc updates.
   [claytron]
 
