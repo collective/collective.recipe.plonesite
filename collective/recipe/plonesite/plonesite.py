@@ -7,10 +7,7 @@ from AccessControl.SecurityManagement import newSecurityManager
 from AccessControl.SecurityManagement import noSecurityManager
 from Testing import makerequest
 from optparse import OptionParser
-try:
-    from Products.PloneTestCase import version
-except ImportError:
-    version = None
+
 pre_plone3 = False
 try:
     from plone.app.linkintegrity.exceptions import \
@@ -23,6 +20,15 @@ except ImportError:
 # the madness with the comma is a result of product names with spaces
 def getProductsWithSpace(opts):
     return [x.replace(',', '') for x in opts]
+
+
+def has_factory_addPloneSite():
+    try:
+        from Products.CMFPlone.factory import addPloneSite
+        addPloneSite  # please pyflakes
+        return True
+    except ImportError:
+        return False
 
 
 def runProfiles(plone, profiles):
@@ -71,7 +77,7 @@ def create(app, site_id, products_initial, profiles_initial, site_replace):
             return
     # actually add in Plone
     if site_id not in oids:
-        if version is not None and version.PLONE40:
+        if has_factory_addPloneSite():
             # we have to simulate the new zmi admin screen here - at
             # least provide:
             # extension_ids
