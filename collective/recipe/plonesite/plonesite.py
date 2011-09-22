@@ -127,6 +127,15 @@ def main(app, parser):
     profiles = getProductsWithSpace(options.profiles)
 
     app = makerequest.makerequest(app)
+
+    try:
+        from zope.globalrequest import setRequest
+        # support plone.subrequest
+        app.REQUEST['PARENTS'] = [app]
+        setRequest(app.REQUEST)
+    except ImportError:
+        pass
+
     # set up security manager
     acl_users = app.acl_users
     user = acl_users.getUser(admin_user)
