@@ -16,6 +16,11 @@ site-id
     The id of the Plone site that the script will create. This will
     also be used to update the site once created. Default: Plone
 
+container-path
+    The path (relative from Zope root) to the container that should hold the
+    Plone site.
+    Default: ``\``
+
 admin-user
     The id of an admin user that will be used as the ``Manager``.
     Default: ``admin``

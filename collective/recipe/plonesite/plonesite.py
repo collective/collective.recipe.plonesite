@@ -14,6 +14,8 @@ try:
         LinkIntegrityNotificationException
 except ImportError:
     # we are using a release prior to 3.x
+    class LinkIntegrityNotificationException(Exception):
+        pass
     pre_plone3 = True
 
 
@@ -58,20 +60,18 @@ def quickinstall(plone, products):
         qit.installProducts(not_installed)
 
 
-def create(app, site_id, products_initial, profiles_initial, site_replace):
-    oids = app.objectIds()
+def create(container, site_id, products_initial, profiles_initial,
+        site_replace):
+    oids = container.objectIds()
     if site_id in oids:
-        if site_replace and hasattr(app, site_id):
-            if pre_plone3:
-                app.manage_delObjects([site_id, ])
-            else:
-                try:
-                    app.manage_delObjects([site_id, ])
-                except LinkIntegrityNotificationException:
-                    pass
+        if site_replace:
+            try:
+                container.manage_delObjects([site_id, ])
+            except LinkIntegrityNotificationException:
+                pass
             transaction.commit()
             print "Removed existing Plone Site"
-            oids = app.objectIds()
+            oids = container.objectIds()
         else:
             print "A Plone Site already exists and will not be replaced"
             return
@@ -88,19 +88,19 @@ def create(app, site_id, products_initial, profiles_initial, site_replace):
                 'plonetheme.sunburst:default',
                 )
             addPloneSite(
-                app,
+                container,
                 site_id,
                 extension_ids=extension_profiles,
                 setup_content=False,
                 )
         else:
-            factory = app.manage_addProduct['CMFPlone']
+            factory = container.manage_addProduct['CMFPlone']
             factory.addPloneSite(site_id, create_userfolder=1)
         # commit the new site to the database
         transaction.commit()
         print "Added Plone Site"
     # install some products
-    plone = getattr(app, site_id)
+    plone = getattr(container, site_id)
     # set the site so that the component architecture will work
     # properly
     if not pre_plone3:
@@ -110,6 +110,7 @@ def create(app, site_id, products_initial, profiles_initial, site_replace):
     # run GS profiles
     runProfiles(plone, profiles_initial)
     print "Finished"
+    return plone
 
 
 def main(app, parser):
@@ -119,6 +120,7 @@ def main(app, parser):
     admin_user = options.admin_user
     post_extras = options.post_extras
     pre_extras = options.pre_extras
+    container_path = options.container_path
 
     # normalize our product/profile lists
     products_initial = getProductsWithSpace(options.products_initial)
@@ -145,9 +147,11 @@ def main(app, parser):
         print "Retrieved the admin user"
     else:
         raise zc.buildout.UserError('The admin-user specified does not exist')
+
+    container = app.unrestrictedTraverse(container_path)
     # create the plone site if it doesn't exist
-    create(app, site_id, products_initial, profiles_initial, site_replace)
-    portal = getattr(app, site_id)
+    portal = create(container, site_id, products_initial, profiles_initial,
+            site_replace)
     # set the site so that the component architecture will work
     # properly
     if not pre_plone3:
@@ -180,6 +184,8 @@ if __name__ == '__main__':
     parser = OptionParser()
     parser.add_option("-s", "--site-id",
                       dest="site_id", default="Plone-%s" % now_str)
+    parser.add_option("-c", "--container-path",
+                      dest="container_path", default="/")
     parser.add_option("-r", "--site-replace",
                       dest="site_replace", action="store_true", default=False)
     parser.add_option("-u", "--admin-user",
