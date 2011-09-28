@@ -74,7 +74,8 @@ def create(container, site_id, products_initial, profiles_initial,
             oids = container.objectIds()
         else:
             print "A Plone Site already exists and will not be replaced"
-            return
+            plone = getattr(container, site_id)
+            return plone
     # actually add in Plone
     if site_id not in oids:
         if has_factory_addPloneSite():
