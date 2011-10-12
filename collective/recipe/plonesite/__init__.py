@@ -39,6 +39,7 @@ class Recipe(object):
         self.site_id = options.get('site-id', 'Plone')
         self.container_path = options.get('container-path', '/')
         self.site_replace = options.get('site-replace', '').lower() in TRUISMS
+        self.default_language = options.get('default-language', 'en')
         self.admin_user = options.get('admin-user', 'admin')
         self.products_initial = options.get('products-initial', "").split()
         self.profiles_initial = options.get('profiles-initial', "").split()
@@ -129,6 +130,7 @@ class Recipe(object):
             args.append("--site-replace")
         args.append("--admin-user=%s" % self.admin_user)
         args.append("--container-path=%s" % self.container_path)
+        args.append("--default-language=%s" % self.default_language)
 
         def createArgList(arg_name, arg_list):
             if arg_list:

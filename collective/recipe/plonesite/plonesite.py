@@ -61,7 +61,7 @@ def quickinstall(plone, products):
 
 
 def create(container, site_id, products_initial, profiles_initial,
-        site_replace):
+        site_replace, default_language):
     oids = container.objectIds()
     if site_id in oids:
         if site_replace:
@@ -93,6 +93,7 @@ def create(container, site_id, products_initial, profiles_initial,
                 site_id,
                 extension_ids=extension_profiles,
                 setup_content=False,
+                default_language=default_language,
                 )
         else:
             factory = container.manage_addProduct['CMFPlone']
@@ -100,8 +101,8 @@ def create(container, site_id, products_initial, profiles_initial,
         # commit the new site to the database
         transaction.commit()
         print "Added Plone Site"
-    # install some products
     plone = getattr(container, site_id)
+    setDefaultLanguageOnPortalLanguages(plone, default_language)
     # set the site so that the component architecture will work
     # properly
     if not pre_plone3:
@@ -114,6 +115,16 @@ def create(container, site_id, products_initial, profiles_initial,
     return plone
 
 
+def setDefaultLanguageOnPortalLanguages(plone, default_language):
+    # Plone factory does not set default_language on portal_languages (until
+    # 4.1)
+    portal_languages = plone.portal_languages
+    portal_languages.setDefaultLanguage(default_language)
+    supported = portal_languages.getSupportedLanguages()
+    portal_languages.removeSupportedLanguages(supported)
+    portal_languages.addSupportedLanguage(default_language)
+
+
 def main(app, parser):
     (options, args) = parser.parse_args()
     site_id = options.site_id
@@ -122,6 +133,7 @@ def main(app, parser):
     post_extras = options.post_extras
     pre_extras = options.pre_extras
     container_path = options.container_path
+    default_language = options.default_language
 
     # normalize our product/profile lists
     products_initial = getProductsWithSpace(options.products_initial)
@@ -152,7 +164,7 @@ def main(app, parser):
     container = app.unrestrictedTraverse(container_path)
     # create the plone site if it doesn't exist
     portal = create(container, site_id, products_initial, profiles_initial,
-            site_replace)
+            site_replace, default_language)
     # set the site so that the component architecture will work
     # properly
     if not pre_plone3:
@@ -189,6 +201,8 @@ if __name__ == '__main__':
                       dest="container_path", default="/")
     parser.add_option("-r", "--site-replace",
                       dest="site_replace", action="store_true", default=False)
+    parser.add_option("-l", "--default-language",
+                      dest="default_language", default="en")
     parser.add_option("-u", "--admin-user",
                       dest="admin_user", default="admin")
     parser.add_option("-p", "--products-initial",

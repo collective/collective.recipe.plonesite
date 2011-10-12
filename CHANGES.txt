@@ -5,6 +5,9 @@
   container where the Plone site will be added.
   [gotcha]
 
+- ``default-language`` recipe option specifies the default language
+  of the Plone site.
+  [sgeulette]
 
 1.5 (2011-09-22)
 ================

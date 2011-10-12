@@ -25,6 +25,10 @@ admin-user
     The id of an admin user that will be used as the ``Manager``.
     Default: ``admin``
 
+default-language
+    The default language of the Plone site.
+    Default: ``en``
+
 products-initial
     A list of products to quick install just after initial site
     creation. See above for information about the product name
