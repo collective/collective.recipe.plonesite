@@ -34,7 +34,7 @@ products-initial
     creation. See above for information about the product name
     format [2]_.
 
-profiles-inital
+profiles-initial
     A list of GenericSetup profiles to run just after initial site
     creation. See above for information on the expected profile id
     format [1]_.

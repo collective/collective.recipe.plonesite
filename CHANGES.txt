@@ -1,6 +1,9 @@
 1.5.1 (Unreleased)
 ==================
 
+- Fixed typo in documentation.
+  [hvelarde]
+
 - ``container-path`` recipe option specifies the path to the
   container where the Plone site will be added.
   [gotcha]
