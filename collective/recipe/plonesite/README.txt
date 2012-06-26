@@ -91,6 +91,22 @@ post-extras
     defined by the site-id option. NOTE: file path cannot contain
     spaces. Default: not set
 
+host
+    A hostname used in VirtualHostMonster traversal.  This will set the
+    root URL for the `portal` variable in any `pre-extras` or `post-extras'
+    scripts.
+    Default: not set
+
+protocol
+    Either 'http' or 'https' for a VirtualHostMonster path. Requires the
+    host option be set.
+    Default: http
+
+port
+    Port for the Zope site used in a VirtualHostMonster path. Requires the
+    host option be set.
+    Default: 80
+
 Example
 =======
 
@@ -137,6 +153,9 @@ Here is an example buildout.cfg with the plonesite recipe::
         ${buildout:directory}/my_script.py
     pre-extras =
         ${buildout:directory}/my_other_script.py
+    host = www.mysite.com
+    protocol = https
+    port = 443
 
 
 Example with Plone 4 content enabled

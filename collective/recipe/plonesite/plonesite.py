@@ -134,6 +134,9 @@ def main(app, parser):
     pre_extras = options.pre_extras
     container_path = options.container_path
     default_language = options.default_language
+    host = options.vhm_host
+    protocol = options.vhm_protocol
+    port = options.vhm_port
 
     # normalize our product/profile lists
     products_initial = getProductsWithSpace(options.products_initial)
@@ -169,6 +172,15 @@ def main(app, parser):
     # properly
     if not pre_plone3:
         setSite(portal)
+
+    if host:
+        print "******* UPDATING VHM INFORMATION ********"
+        vhm_string = "/VirtualHostBase/%s/%s:%s/%s/VirtualHostRoot" % (
+                                    protocol, host, port, site_id)
+        portal.REQUEST['PARENTS'] = [app]
+        traverse = portal.REQUEST.traverse
+        traverse(vhm_string)
+        print "******* SET VHM INFO TO %s *******" % vhm_string
 
     def runExtras(portal, script_path):
         if os.path.exists(script_path):
@@ -217,4 +229,10 @@ if __name__ == '__main__':
                       dest="post_extras", action="append", default=[])
     parser.add_option("-b", "--pre-extras",
                       dest="pre_extras", action="append", default=[])
+    parser.add_option("--host",
+                      dest="vhm_host", default='')
+    parser.add_option("--protocol",
+                      dest="vhm_protocol", default='http')
+    parser.add_option("--port",
+                      dest="vhm_port", default='80')
     main(app, parser)

@@ -1,3 +1,17 @@
+1.6 (2012-06-26)
+================
+
+- Add VirtualHostMonster path support for the 'portal' variable 
+  available in ``pre-extras`` and ``post-extras`` scripts.
+
+- ``host`` recipe option specifices a hostname to be used in
+  a VirtualHostMonster path for extra recipe scripts.
+
+- ``port`` recipe option specifies a port to be used in a
+  VirtualHostMonster path for extra recipe scripts.
+
+- ``protocol`` recipe option specifies a protocol to be used in
+
 1.5.1 (Unreleased)
 ==================
 

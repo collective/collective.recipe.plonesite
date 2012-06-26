@@ -47,6 +47,9 @@ class Recipe(object):
         self.profiles = options.get('profiles', "").split()
         self.post_extras = options.get('post-extras', "").split()
         self.pre_extras = options.get('pre-extras', "").split()
+        self.vhm_protocol = options.get('protocol', "http")
+        self.vhm_host = options.get('host', "")
+        self.vhm_port = options.get('port', "80")
         options['args'] = self.createArgs()
 
         # We can disable the starting of zope and zeo.  useful from the
@@ -131,6 +134,9 @@ class Recipe(object):
         args.append("--admin-user=%s" % self.admin_user)
         args.append("--container-path=%s" % self.container_path)
         args.append("--default-language=%s" % self.default_language)
+        args.append("--host=%s" % self.vhm_host)
+        args.append("--port=%s" % self.vhm_port)
+        args.append("--protocol=%s" % self.vhm_protocol)
 
         def createArgList(arg_name, arg_list):
             if arg_list:
