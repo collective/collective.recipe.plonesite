@@ -93,7 +93,7 @@ post-extras
 
 host
     A hostname used in VirtualHostMonster traversal.  This will set the
-    root URL for the `portal` variable in any `pre-extras` or `post-extras'
+    root URL for the `portal` variable in any `pre-extras` or `post-extras`
     scripts. Default: not set
 
 protocol
