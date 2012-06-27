@@ -94,18 +94,15 @@ post-extras
 host
     A hostname used in VirtualHostMonster traversal.  This will set the
     root URL for the `portal` variable in any `pre-extras` or `post-extras'
-    scripts.
-    Default: not set
+    scripts. Default: not set
 
 protocol
     Either 'http' or 'https' for a VirtualHostMonster path. Requires the
-    host option be set.
-    Default: http
+    host option be set. Default: http
 
 port
     Port for the Zope site used in a VirtualHostMonster path. Requires the
-    host option be set.
-    Default: 80
+    host option be set. Default: 80
 
 Example
 =======
