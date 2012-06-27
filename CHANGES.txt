@@ -1,16 +1,23 @@
+1.6.1 (2012-06-27)
+
+- Fix reST formatting. [nrb]
+
+- Correct some doc oversights. [nrb]
+
 1.6 (2012-06-26)
 ================
 
 - Add VirtualHostMonster path support for the 'portal' variable 
-  available in ``pre-extras`` and ``post-extras`` scripts.
+  available in ``pre-extras`` and ``post-extras`` scripts. [nrb]
 
 - ``host`` recipe option specifices a hostname to be used in
-  a VirtualHostMonster path for extra recipe scripts.
+  a VirtualHostMonster path for extra recipe scripts. [nrb]
 
 - ``port`` recipe option specifies a port to be used in a
-  VirtualHostMonster path for extra recipe scripts.
+  VirtualHostMonster path for extra recipe scripts. [nrb]
 
-- ``protocol`` recipe option specifies a protocol to be used in
+- ``protocol`` recipe option specifies a protocol to be used in 
+  a VirtualHostMonster path from extra recipe scripts. [nrb]
 
 1.5.1 (Unreleased)
 ==================
