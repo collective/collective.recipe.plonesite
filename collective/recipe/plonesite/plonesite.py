@@ -180,6 +180,7 @@ def main(app, parser):
         portal.REQUEST['PARENTS'] = [app]
         traverse = portal.REQUEST.traverse
         traverse(vhm_string)
+        newSecurityManager(None, user)
         print "******* SET VHM INFO TO %s *******" % vhm_string
 
     def runExtras(portal, script_path):
