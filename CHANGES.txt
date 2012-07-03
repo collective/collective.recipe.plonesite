@@ -1,3 +1,8 @@
+1.6.2 (2012-07-03)
+==================
+
+- Update VirtualHostMonster support to correct loss of elevated security context. [davidblewett]
+
 1.6.1 (2012-06-27)
 ==================
 
