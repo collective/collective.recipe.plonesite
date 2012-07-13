@@ -24,10 +24,10 @@ def getProductsWithSpace(opts):
     return [x.replace(',', '') for x in opts]
 
 
-def has_factory_addPloneSite():
+def has_setup_content():
     try:
-        from Products.CMFPlone.factory import addPloneSite
-        addPloneSite  # please pyflakes
+        from plone.app.upgrade import v41
+        v41  # please pyflakes
         return True
     except ImportError:
         return False
@@ -78,7 +78,7 @@ def create(container, site_id, products_initial, profiles_initial,
             return plone
     # actually add in Plone
     if site_id not in oids:
-        if has_factory_addPloneSite():
+        if has_setup_content():
             # we have to simulate the new zmi admin screen here - at
             # least provide:
             # extension_ids

@@ -1,7 +1,7 @@
 1.6.4 (xxxx-xx-xx)
 ==================
 
-- 
+- Update version check to correctly differentiate between Plone 4.1.x and Plone 4.0 and below. [davidblewett]
 
 1.6.3 (2012-07-03)
 ==================
