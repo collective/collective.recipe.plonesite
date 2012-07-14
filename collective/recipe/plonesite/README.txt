@@ -1,6 +1,11 @@
 Options
 =======
 
+This recipe honors the ``log-level`` buildout-level config value, and the
+``verbosity`` setting, overriding the running Zope instance's ``eventlog``
+level. This allows you to get more logging output when running the part,
+but have less verbosity when the site is actually running.
+
 .. [1] Profiles have the following format: ``<package_name>:<profile>``
        (e.g. ``my.package:default``). The profile can also be prepended
        with the ``profile-`` if you so choose

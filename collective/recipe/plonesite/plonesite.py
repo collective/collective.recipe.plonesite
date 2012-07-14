@@ -1,3 +1,4 @@
+import logging
 import os
 from datetime import datetime
 from zope.app.component.hooks import setSite
@@ -19,6 +20,8 @@ except ImportError:
     pre_plone3 = True
 
 
+logger = logging.getLogger('collective.recipe.plonesite')
+
 # the madness with the comma is a result of product names with spaces
 def getProductsWithSpace(opts):
     return [x.replace(',', '') for x in opts]
@@ -34,7 +37,7 @@ def has_setup_content():
 
 
 def runProfiles(plone, profiles):
-    print "Running profiles: %s" % profiles
+    logger.info("Running profiles: %s", profiles)
     stool = plone.portal_setup
     for profile in profiles:
         if not profile.startswith('profile-'):
@@ -47,7 +50,7 @@ def runProfiles(plone, profiles):
 
 
 def quickinstall(plone, products):
-    print "Quick installing: %s" % products
+    logger.info("Quick installing: %s", products)
     qit = plone.portal_quickinstaller
     not_installed_ids = [
         x['id'] for x in qit.listInstallableProducts(skipInstalled=1)]
@@ -70,10 +73,10 @@ def create(container, site_id, products_initial, profiles_initial,
             except LinkIntegrityNotificationException:
                 pass
             transaction.commit()
-            print "Removed existing Plone Site"
+            logger.warrning("Removed existing Plone Site")
             oids = container.objectIds()
         else:
-            print "A Plone Site already exists and will not be replaced"
+            logger.warning("A Plone Site already exists and will not be replaced")
             plone = getattr(container, site_id)
             return plone
     # actually add in Plone
@@ -100,7 +103,7 @@ def create(container, site_id, products_initial, profiles_initial,
             factory.addPloneSite(site_id, create_userfolder=1)
         # commit the new site to the database
         transaction.commit()
-        print "Added Plone Site"
+        logger.info("Added Plone Site")
     plone = getattr(container, site_id)
     setDefaultLanguageOnPortalLanguages(plone, default_language)
     # set the site so that the component architecture will work
@@ -111,7 +114,7 @@ def create(container, site_id, products_initial, profiles_initial,
         quickinstall(plone, products_initial)
     # run GS profiles
     runProfiles(plone, profiles_initial)
-    print "Finished"
+    logger.info("Finished")
     return plone
 
 
@@ -137,6 +140,19 @@ def main(app, parser):
     host = options.vhm_host
     protocol = options.vhm_protocol
     port = options.vhm_port
+    log_level = options.log_level
+
+    # set up logging
+    try:
+        log_level = int(log_level)
+    except ValueError:
+        msg = 'The configured log-level is not valid: %s' % log_level
+        raise zc.buildout.UserError(msg)
+    root_logger = logging.getLogger()
+    root_logger.setLevel(log_level)
+    logger.setLevel(logging.getLevelName(log_level))
+    for handler in root_logger.handlers:
+        handler.setLevel(log_level)
 
     # normalize our product/profile lists
     products_initial = getProductsWithSpace(options.products_initial)
@@ -160,7 +176,7 @@ def main(app, parser):
     if user:
         user = user.__of__(acl_users)
         newSecurityManager(None, user)
-        print "Retrieved the admin user"
+        logger.info("Retrieved the admin user")
     else:
         raise zc.buildout.UserError('The admin-user specified does not exist')
 
@@ -174,14 +190,14 @@ def main(app, parser):
         setSite(portal)
 
     if host:
-        print "******* UPDATING VHM INFORMATION ********"
+        logger.info("******* UPDATING VHM INFORMATION ********")
         vhm_string = "/VirtualHostBase/%s/%s:%s/%s/VirtualHostRoot" % (
                                     protocol, host, port, site_id)
         portal.REQUEST['PARENTS'] = [app]
         traverse = portal.REQUEST.traverse
         traverse(vhm_string)
         newSecurityManager(None, user)
-        print "******* SET VHM INFO TO %s *******" % vhm_string
+        logger.info("******* SET VHM INFO TO %s *******", vhm_string)
 
     def runExtras(portal, script_path):
         if os.path.exists(script_path):
@@ -236,4 +252,6 @@ if __name__ == '__main__':
                       dest="vhm_protocol", default='http')
     parser.add_option("--port",
                       dest="vhm_port", default='80')
+    parser.add_option("--log-level",
+                      dest="log_level", default='20')
     main(app, parser)
