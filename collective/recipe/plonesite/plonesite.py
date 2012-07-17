@@ -22,6 +22,7 @@ except ImportError:
 
 logger = logging.getLogger('collective.recipe.plonesite')
 
+
 # the madness with the comma is a result of product names with spaces
 def getProductsWithSpace(opts):
     return [x.replace(',', '') for x in opts]
@@ -254,4 +255,4 @@ if __name__ == '__main__':
                       dest="vhm_port", default='80')
     parser.add_option("--log-level",
                       dest="log_level", default='20')
-    main(app, parser)
+    main(app, parser)  # FIXME: undefined name 'app'
