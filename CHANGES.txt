@@ -1,7 +1,8 @@
 1.7.2 (xxxx-xx-xx)
 ==================
 
--
+- Fixed typo on logger when removing existing Plone site.
+  [hvelarde]
 
 1.7.1 (2012-07-13)
 ==================

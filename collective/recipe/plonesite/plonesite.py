@@ -73,7 +73,7 @@ def create(container, site_id, products_initial, profiles_initial,
             except LinkIntegrityNotificationException:
                 pass
             transaction.commit()
-            logger.warrning("Removed existing Plone Site")
+            logger.warning("Removed existing Plone Site")
             oids = container.objectIds()
         else:
             logger.warning("A Plone Site already exists and will not be replaced")
