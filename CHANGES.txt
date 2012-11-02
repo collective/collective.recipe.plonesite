@@ -1,7 +1,10 @@
 1.7.3 (xxxx-xx-xx)
 ==================
 
-
+- Use ``_delObject(site_id, suppress_events=True)`` to delete the site.
+  This ignores all events and just removes the site completely when
+  using the ``site-replace`` option.
+  [claytron]
 
 1.7.2 (2012-08-06)
 ==================
