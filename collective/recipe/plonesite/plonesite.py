@@ -69,10 +69,8 @@ def create(container, site_id, products_initial, profiles_initial,
     oids = container.objectIds()
     if site_id in oids:
         if site_replace:
-            try:
-                container.manage_delObjects([site_id, ])
-            except LinkIntegrityNotificationException:
-                pass
+            # Delete the site, ignoring events
+            container._delObject(site_id, suppress_events=True)
             transaction.commit()
             logger.warning("Removed existing Plone Site")
             oids = container.objectIds()
