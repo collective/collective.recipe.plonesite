@@ -1,3 +1,17 @@
+1.8.1 (2012-11-16)
+==================
+
+- Add changelog entry for 1.8.90
+  [nrb]
+
+1.8.0 (2012-11-16)
+==================
+
+- Add the ``use-vhm`` option to select traversal mode.
+  Setting ``use-vhm`` to ``False`` will cause the traversal to use
+  regular Zope traversal when running the recipe.
+  [nrb]
+
 1.7.3 (xxxx-xx-xx)
 ==================
 
