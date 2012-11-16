@@ -50,6 +50,7 @@ class Recipe(object):
         self.vhm_protocol = options.get('protocol', "http")
         self.vhm_host = options.get('host', "")
         self.vhm_port = options.get('port', "80")
+        self.use_vhm = options.get('use-vhm', True)
         self.log_level = buildout._log_level
         options['args'] = self.createArgs()
 
@@ -137,6 +138,7 @@ class Recipe(object):
         args.append("--default-language=%s" % self.default_language)
         args.append("--host=%s" % self.vhm_host)
         args.append("--port=%s" % self.vhm_port)
+        args.append("--use-vhm=%s" %self.use_vhm)
         args.append("--protocol=%s" % self.vhm_protocol)
         args.append("--log-level=%s" % self.log_level)
 

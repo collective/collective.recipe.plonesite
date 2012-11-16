@@ -109,6 +109,12 @@ port
     Port for the Zope site used in a VirtualHostMonster path. Requires the
     host option be set. Default: 80
 
+use-vhm
+    Signals whether Plone site should use VirtualHostMonster or ordinary
+    Zope traversal when generating a request. Useful for setting up instances
+    that will not be proxied behind Apache or Nginx, such as local development.
+    Default: True
+
 Example
 =======
 

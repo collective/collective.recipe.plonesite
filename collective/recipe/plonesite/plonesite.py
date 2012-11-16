@@ -77,9 +77,11 @@ def create(container, site_id, products_initial, profiles_initial,
         else:
             logger.warning("A Plone Site already exists and will not be replaced")
             plone = getattr(container, site_id)
-            return plone
+            created = False
+            return (plone, created)
     # actually add in Plone
     if site_id not in oids:
+        created = True
         if has_setup_content():
             # we have to simulate the new zmi admin screen here - at
             # least provide:
@@ -109,12 +111,7 @@ def create(container, site_id, products_initial, profiles_initial,
     # properly
     if not pre_plone3:
         setSite(plone)
-    if plone:
-        quickinstall(plone, products_initial)
-    # run GS profiles
-    runProfiles(plone, profiles_initial)
-    logger.info("Finished")
-    return plone
+    return (plone, created)
 
 
 def setDefaultLanguageOnPortalLanguages(plone, default_language):
@@ -137,6 +134,8 @@ def main(app, parser):
     container_path = options.container_path
     default_language = options.default_language
     host = options.vhm_host
+    use_vhm = options.use_vhm
+    use_vhm = use_vhm == 'True'
     protocol = options.vhm_protocol
     port = options.vhm_port
     log_level = options.log_level
@@ -159,7 +158,14 @@ def main(app, parser):
     profiles_initial = getProductsWithSpace(options.profiles_initial)
     profiles = getProductsWithSpace(options.profiles)
 
-    app = makerequest.makerequest(app)
+    if host and port and not use_vhm:
+        environ = {
+            'SERVER_NAME': host,
+            'SERVER_PORT': port,
+        }
+        app = makerequest.makerequest(app, environ=environ)
+    else:
+        app = makerequest.makerequest(app)
 
     try:
         from zope.globalrequest import setRequest
@@ -181,14 +187,14 @@ def main(app, parser):
 
     container = app.unrestrictedTraverse(container_path)
     # create the plone site if it doesn't exist
-    portal = create(container, site_id, products_initial, profiles_initial,
-            site_replace, default_language)
+    portal, created = create(container, site_id, products_initial,
+                             profiles_initial, site_replace, default_language)
     # set the site so that the component architecture will work
     # properly
     if not pre_plone3:
         setSite(portal)
 
-    if host:
+    if use_vhm:
         logger.info("******* UPDATING VHM INFORMATION ********")
         vhm_string = "/VirtualHostBase/%s/%s:%s/%s/VirtualHostRoot" % (
                                     protocol, host, port, site_id)
@@ -197,6 +203,11 @@ def main(app, parser):
         traverse(vhm_string)
         newSecurityManager(None, user)
         logger.info("******* SET VHM INFO TO %s *******", vhm_string)
+
+    if portal and created:
+        quickinstall(portal, products_initial)
+        runProfiles(portal, profiles_initial)
+        logger.info("Finished")
 
     def runExtras(portal, script_path):
         if os.path.exists(script_path):
@@ -245,6 +256,8 @@ if __name__ == '__main__':
                       dest="post_extras", action="append", default=[])
     parser.add_option("-b", "--pre-extras",
                       dest="pre_extras", action="append", default=[])
+    parser.add_option("--use-vhm",
+                      dest="use_vhm", default='True')
     parser.add_option("--host",
                       dest="vhm_host", default='')
     parser.add_option("--protocol",
