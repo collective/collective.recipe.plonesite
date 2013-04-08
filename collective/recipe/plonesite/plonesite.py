@@ -1,7 +1,12 @@
 import logging
 import os
 from datetime import datetime
-from zope.app.component.hooks import setSite
+try:
+    # Plone < 4.3
+    from zope.app.component.hooks import setSite
+except ImportError:
+    # Plone >= 4.3
+    from zope.component.hooks import setSite  # NOQA
 import zc.buildout
 import transaction
 from AccessControl.SecurityManagement import newSecurityManager
