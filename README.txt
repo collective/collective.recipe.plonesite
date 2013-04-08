@@ -8,5 +8,5 @@ steps, and other recipes will handle the rest of the work.
 
 .. contents::
 
-- Code repository: http://svn.plone.org/svn/collective/buildout/collective.recipe.plonesite
-- Report bugs at https://bugs.launchpad.net/collective.buildout/
+- Code repository: https://github.com/collective/collective.recipe.plonesite
+- Report bugs at https://github.com/collective/collective.recipe.plonesite/issues
