@@ -80,7 +80,8 @@ def create(container, site_id, products_initial, profiles_initial,
             logger.warning("Removed existing Plone Site")
             oids = container.objectIds()
         else:
-            logger.warning("A Plone Site already exists and will not be replaced")
+            logger.warning(
+                "A Plone Site already exists and will not be replaced")
             plone = getattr(container, site_id)
             created = False
             return (plone, created)
@@ -271,4 +272,4 @@ if __name__ == '__main__':
                       dest="vhm_port", default='80')
     parser.add_option("--log-level",
                       dest="log_level", default='20')
-    main(app, parser)  # FIXME: undefined name 'app'
+    main(app, parser)  # NOQA
