@@ -104,6 +104,9 @@ class Recipe(object):
             if self.zeoserver:
                 zeo_cmd = "%(bin-directory)s/%(zeo-script)s" % options
                 zeo_start = "%s start" % zeo_cmd
+
+		if self.use_sudo:
+		    zeo_start = "sudo " + zeo_start
                 subprocess.call(zeo_start.split())
 
             # XXX This seems wrong...
@@ -118,6 +121,8 @@ class Recipe(object):
 
             if self.zeoserver:
                 zeo_stop = "%s stop" % zeo_cmd
+		if self.use_sudo:
+		    zeo_stop = "sudo " + zeo_stop
                 subprocess.call(zeo_stop.split())
             if self.after_install:
                 system(self.after_install)
