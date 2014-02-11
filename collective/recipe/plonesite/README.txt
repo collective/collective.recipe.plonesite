@@ -115,6 +115,12 @@ use-vhm
     that will not be proxied behind Apache or Nginx, such as local development.
     Default: True
 
+use-sudo
+    Run the task under a different user, as specified in the
+    appropriate instance's buildout section. You need to configure
+    sudo appropriately.
+
+
 Example
 =======
 
