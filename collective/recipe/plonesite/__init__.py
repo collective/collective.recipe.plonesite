@@ -51,6 +51,7 @@ class Recipe(object):
         self.vhm_host = options.get('host', "")
         self.vhm_port = options.get('port', "80")
         self.use_vhm = options.get('use-vhm', True)
+        self.use_sudo = options.get('use-sudo', False)
         self.log_level = buildout._log_level
         options['args'] = self.createArgs()
 
@@ -111,6 +112,8 @@ class Recipe(object):
             # run the script
             cmd = ("%(bin-directory)s/%(instance-script)s run "
                    "%(script)s %(args)s") % options
+            if self.use_sudo:
+                cmd = "sudo %s" % cmd
             subprocess.call(cmd.split())
 
             if self.zeoserver:
