@@ -1,6 +1,14 @@
-1.8.3 (xxxx-xx-xx)
+1.8.4 (xxxx-xx-xx)
 ==================
 
+
+1.8.3 (2014-02-11)
+===================
+
+- Add an option to allow the use of sudo, if you have specified different UIDs for
+  Zope and the ZEO server.
+- bump the version number
+  [muellert]
 
 
 1.8.2 (2013-04-08)
