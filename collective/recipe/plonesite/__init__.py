@@ -47,6 +47,12 @@ class Recipe(object):
         self.products = options.get('products', "").split()
         self.profiles = options.get('profiles', "").split()
 
+        self.upgrade_portal = options.get(
+            'upgrade-portal', '').lower() in TRUISMS
+        self.upgrade_all_profiles = options.get(
+            'upgrade-all-profiles', '').lower() in TRUISMS
+        self.upgrade_profiles = options.get('upgrade-profiles', '').split()
+
         self.post_extras = options.get('post-extras', "").split()
         self.pre_extras = options.get('pre-extras', "").split()
 
@@ -165,5 +171,11 @@ class Recipe(object):
         createArgList('--products', self.products)
         createArgList('--profiles-initial', self.profiles_initial)
         createArgList('--profiles', self.profiles)
+
+        if self.upgrade_portal:
+            args.append("--upgrade-portal")
+        if self.upgrade_all_profiles:
+            args.append("--upgrade-all-profiles")
+        createArgList('--upgrade-profile', self.upgrade_profiles)
 
         return " ".join(args)

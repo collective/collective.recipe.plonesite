@@ -52,6 +52,22 @@ profiles
     A list of GenericSetup profiles to run each time buildout is run.
     See above for information on the expected profile id format [1]_.
 
+upgrade-portal
+    Upgrade the site to the current version on the filesystem by
+    running all upgrade steps for the site's base GenericSetup
+    profile.  Requires `collective.upgrade`_ be installed.  Default: false
+
+upgrade-all-profiles
+    Upgrade all GenericSetup profiles installed in the site to their current
+    versions on the filesystem by running all their upgrade steps.  Requires
+    `collective.upgrade`_ be installed. Default: false
+
+upgrade-profiles
+    A list of GenericSetup profiles to run upgrade steps for each time buildout
+    is run. Upgrades are run after ``profiles-initial`` and before
+    ``profiles``. See above for information on the expected profile id format
+    [1]_.  Requires `collective.upgrade`_ be installed.
+
 instance
     The name of the instance that will run the script.
     Default: instance
@@ -159,10 +175,13 @@ Here is an example buildout.cfg with the plonesite recipe::
     site-id = test
     instance = instance
     zeoserver = zeoserver
-    profiles-initial = my.package:initial
+    # A profile with proper upgrade steps
+    profiles-initial = addon.package:default
     profiles = 
+    # A profile not using upgrade steps, such as a simple policy package
         my.package:default
-        my.other.package:default
+    upgrade-portal = True
+    upgrade-all-profiles = True
     post-extras =
         ${buildout:directory}/my_script.py
     pre-extras =
@@ -194,3 +213,6 @@ Here is another example buildout.cfg with the plone4site recipe::
     profiles = 
         my.package:default
         my.other.package:default
+
+
+.. _collective.upgrade: https://pypi.python.org/pypi/collective.upgrade

@@ -24,6 +24,11 @@ except ImportError:
         pass
     pre_plone3 = True
 
+try:
+    from collective.upgrade import run as upgrade
+except ImportError:
+    upgrade = None
+
 
 logger = logging.getLogger('collective.recipe.plonesite')
 
@@ -165,6 +170,11 @@ def main(app, parser):
     profiles_initial = getProductsWithSpace(options.profiles_initial)
     profiles = getProductsWithSpace(options.profiles)
 
+    if upgrade is not None:
+        if options.upgrade_profiles and options.upgrade_all_profiles:
+            raise zc.buildout.UserError(
+                'Using upgrade-profiles conflicts with upgrade-all-profiles')
+
     if host and port and not use_vhm:
         environ = {
             'SERVER_NAME': host,
@@ -226,6 +236,18 @@ def main(app, parser):
     for pre_extra in pre_extras:
         runExtras(portal, pre_extra)
 
+    if (
+            options.upgrade_portal or
+            options.upgrade_profiles or options.upgrade_all_profiles):
+        if upgrade is None:
+            raise zc.buildout.UserError(
+                "The profile upgrade options require 'collective.upgrade'")
+        runner = portal.restrictedTraverse('@@collective.upgrade.form')
+        runner.upgrade(
+            upgrade_portal=options.upgrade_portal,
+            upgrade_profiles=options.upgrade_profiles,
+            upgrade_all_profiles=options.upgrade_all_profiles)
+
     if products:
         quickinstall(portal, products)
     if profiles:
@@ -260,6 +282,19 @@ if __name__ == '__main__':
                       dest="profiles_initial", action="append", default=[])
     parser.add_option("-x", "--profiles",
                       dest="profiles", action="append", default=[])
+
+    if upgrade is not None:
+        parser.add_option(
+            '-U', '--upgrade-portal', action="store_true",
+            help='Run all upgrade steps for the core Plone baseline profile.')
+        parser.add_option(
+            '-A', '--upgrade-all-profiles', action="store_true",
+            help='Run all upgrade steps for all installed extension profiles.')
+        parser.add_option(
+            '-G', '--upgrade-profile',
+            action='append', dest='upgrade_profiles',
+            help='Run all upgrades for the given profile.  '
+            'May be given multiple times to upgrade multiple profiles.')
 
     parser.add_option("-e", "--post-extras",
                       dest="post_extras", action="append", default=[])

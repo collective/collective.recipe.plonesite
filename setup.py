@@ -9,7 +9,7 @@ from setuptools import setup, find_packages
 def read(*rnames):
     return open(os.path.join(os.path.dirname(__file__), *rnames)).read()
 
-version = '1.8.3'
+version = '1.8.4'
 
 long_description = (
     read('README.txt')
@@ -66,7 +66,9 @@ setup(
         # -*- Extra requirements: -*-
     ],
     tests_require=tests_require,
-    extras_require=dict(tests=tests_require),
+    extras_require=dict(
+        tests=tests_require,
+        upgrade=['collective.upgrade>=1.0rc1']),
     test_suite='collective.recipe.plonesite.tests.test_docs.test_suite',
     entry_points=entry_points,
     )

@@ -1,6 +1,10 @@
 1.8.4 (xxxx-xx-xx)
 ==================
 
+- Add options for running profile upgrade steps if ``collective.upgrade`` is
+  installed.
+  [@rpatterson]
+
 
 1.8.3 (2014-02-11)
 ===================
