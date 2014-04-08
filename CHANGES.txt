@@ -35,7 +35,7 @@
   regular Zope traversal when running the recipe.
   [nrb]
 
-1.7.3 (xxxx-xx-xx)
+1.7.3 (2012-11-02)
 ==================
 
 - Use ``_delObject(site_id, suppress_events=True)`` to delete the site.
