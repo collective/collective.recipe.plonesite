@@ -69,7 +69,8 @@ def quickinstall(plone, products):
         qit.installProducts(not_installed)
 
 
-def create(container, site_id, products_initial, profiles_initial,
+def create(
+        container, site_id, products_initial, profiles_initial,
         site_replace, default_language):
     oids = container.objectIds()
     if site_id in oids:
@@ -203,7 +204,7 @@ def main(app, parser):
     if use_vhm:
         logger.info("******* UPDATING VHM INFORMATION ********")
         vhm_string = "/VirtualHostBase/%s/%s:%s/%s/VirtualHostRoot" % (
-                                    protocol, host, port, site_id)
+            protocol, host, port, site_id)
         portal.REQUEST['PARENTS'] = [app]
         traverse = portal.REQUEST.traverse
         traverse(vhm_string)

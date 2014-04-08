@@ -146,7 +146,7 @@ class Recipe(object):
         args.append("--default-language=%s" % self.default_language)
         args.append("--host=%s" % self.vhm_host)
         args.append("--port=%s" % self.vhm_port)
-        args.append("--use-vhm=%s" %self.use_vhm)
+        args.append("--use-vhm=%s" % self.use_vhm)
         args.append("--protocol=%s" % self.vhm_protocol)
         args.append("--log-level=%s" % self.log_level)
 
