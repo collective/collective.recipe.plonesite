@@ -41,16 +41,20 @@ class Recipe(object):
         self.site_replace = options.get('site-replace', '').lower() in TRUISMS
         self.default_language = options.get('default-language', 'en')
         self.admin_user = options.get('admin-user', 'admin')
+
         self.products_initial = options.get('products-initial', "").split()
         self.profiles_initial = options.get('profiles-initial', "").split()
         self.products = options.get('products', "").split()
         self.profiles = options.get('profiles', "").split()
+
         self.post_extras = options.get('post-extras', "").split()
         self.pre_extras = options.get('pre-extras', "").split()
+
         self.vhm_protocol = options.get('protocol', "http")
         self.vhm_host = options.get('host', "")
         self.vhm_port = options.get('port', "80")
         self.use_vhm = options.get('use-vhm', True)
+
         self.use_sudo = options.get('use-sudo', False)
         self.log_level = buildout._log_level
         options['args'] = self.createArgs()
@@ -156,8 +160,10 @@ class Recipe(object):
                     args.append("%s=%s" % (arg_name, arg))
         createArgList('--pre-extras', self.pre_extras)
         createArgList('--post-extras', self.post_extras)
+
         createArgList('--products-initial', self.products_initial)
         createArgList('--products', self.products)
         createArgList('--profiles-initial', self.profiles_initial)
         createArgList('--profiles', self.profiles)
+
         return " ".join(args)

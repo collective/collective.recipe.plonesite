@@ -251,6 +251,7 @@ if __name__ == '__main__':
                       dest="default_language", default="en")
     parser.add_option("-u", "--admin-user",
                       dest="admin_user", default="admin")
+
     parser.add_option("-p", "--products-initial",
                       dest="products_initial", action="append", default=[])
     parser.add_option("-a", "--products",
@@ -259,10 +260,12 @@ if __name__ == '__main__':
                       dest="profiles_initial", action="append", default=[])
     parser.add_option("-x", "--profiles",
                       dest="profiles", action="append", default=[])
+
     parser.add_option("-e", "--post-extras",
                       dest="post_extras", action="append", default=[])
     parser.add_option("-b", "--pre-extras",
                       dest="pre_extras", action="append", default=[])
+
     parser.add_option("--use-vhm",
                       dest="use_vhm", default='True')
     parser.add_option("--host",
@@ -271,6 +274,7 @@ if __name__ == '__main__':
                       dest="vhm_protocol", default='http')
     parser.add_option("--port",
                       dest="vhm_port", default='80')
+
     parser.add_option("--log-level",
                       dest="log_level", default='20')
     main(app, parser)  # NOQA
