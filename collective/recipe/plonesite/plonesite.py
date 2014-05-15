@@ -236,12 +236,9 @@ def main(app, parser):
     for pre_extra in pre_extras:
         runExtras(portal, pre_extra)
 
-    if (
+    if upgrade is not None and (
             options.upgrade_portal or
             options.upgrade_profiles or options.upgrade_all_profiles):
-        if upgrade is None:
-            raise zc.buildout.UserError(
-                "The profile upgrade options require 'collective.upgrade'")
         runner = portal.restrictedTraverse('@@collective.upgrade.form')
         runner.upgrade(
             upgrade_portal=options.upgrade_portal,
