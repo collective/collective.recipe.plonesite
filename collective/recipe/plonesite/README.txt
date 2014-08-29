@@ -136,6 +136,11 @@ use-sudo
     appropriate instance's buildout section. You need to configure
     sudo appropriately.
 
+add-mountpoint
+    Adds the ZODB Mount Point at the path specified by container-path, if it 
+    already does not exist. Very handy when used in conjunction with
+    collective.recipe.filestorage.    
+
 
 Example
 =======
@@ -216,3 +221,63 @@ Here is another example buildout.cfg with the plone4site recipe::
 
 
 .. _collective.upgrade: https://pypi.python.org/pypi/collective.upgrade
+
+
+
+Example with Multiple Mount Points
+(using collective.recipe.filestorage)
+=====================================
+
+    [buildout]
+    parts =
+        filestorage
+        instance
+        zeoserver
+        plonesite1
+        plonesite2
+
+    [filestorage]
+    recipe = collective.recipe.filestorage
+    parts = 
+        mp1
+        mp2
+
+    [instance]
+    recipe = plone.recipe.zope2instance
+    ...
+    eggs =
+        ...
+        my.package
+        my.other.package
+
+    zcml =
+        ...
+        my.package
+        my.other.package
+
+    [zeoserver]
+    recipe = plone.recipe.zope2zeoserver
+    ...
+
+    [plonesite1]
+    recipe = collective.recipe.plonesite
+    add-mountpoint = true
+    container-path = /mp1
+    enabled = true
+    instance = instance
+    profiles-initial = Products.CMFPlone:plone-content
+    site-id = portal
+    site-replace = false
+    zeoserver = zeoserver
+
+    [plonesite2]
+    recipe = collective.recipe.plonesite
+    add-mountpoint = true
+    container-path = /mp2
+    enabled = true
+    instance = instance
+    profiles-initial = Products.CMFPlone:plone-content
+    site-id = portal
+    site-replace = false
+    zeoserver = zeoserver
+
