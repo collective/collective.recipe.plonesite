@@ -62,6 +62,8 @@ class Recipe(object):
         self.use_vhm = options.get('use-vhm', True)
 
         self.use_sudo = options.get('use-sudo', False)
+        self.add_mountpoint = options.get('add-mountpoint', '').lower() in TRUISMS
+
         self.log_level = buildout._log_level
         options['args'] = self.createArgs()
 
@@ -159,6 +161,7 @@ class Recipe(object):
         args.append("--use-vhm=%s" % self.use_vhm)
         args.append("--protocol=%s" % self.vhm_protocol)
         args.append("--log-level=%s" % self.log_level)
+        args.append("--add-mountpoint=%s" % self.add_mountpoint)
 
         def createArgList(arg_name, arg_list):
             if arg_list:

@@ -148,6 +148,8 @@ def main(app, parser):
     host = options.vhm_host
     use_vhm = options.use_vhm
     use_vhm = use_vhm == 'True'
+    add_mountpoint = options.add_mountpoint
+    add_mountpoint = add_mountpoint == 'True'
     protocol = options.vhm_protocol
     port = options.vhm_port
     log_level = options.log_level
@@ -202,6 +204,22 @@ def main(app, parser):
     else:
         raise zc.buildout.UserError('The admin-user specified does not exist')
 
+    
+    # Verify if the mount-point exists
+    try:
+        app.unrestrictedTraverse(container_path)
+    except KeyError:
+        if add_mountpoint:
+            try:
+               app.manage_addProduct['ZODBMountPoint'].manage_addMounts(
+                   paths=[container_path], create_mount_points=1)
+            except Exception as e:
+               msg = 'An error ocurred while trying to add ZODB Mount Point %s: %s'
+               raise zc.buildout.UserError(msg % (container_path, str(e)))
+        else:
+            msg = 'No ZODB Mount Point at container-path %s and add-mountpoint not specified.'
+            raise zc.buildout.UserError(msg % container_path)
+	 
     container = app.unrestrictedTraverse(container_path)
     # create the plone site if it doesn't exist
     portal, created = create(container, site_id, products_initial,
@@ -300,6 +318,8 @@ if __name__ == '__main__':
 
     parser.add_option("--use-vhm",
                       dest="use_vhm", default='True')
+    parser.add_option("--add-mountpoint",
+                      dest="add_mountpoint", default='False')
     parser.add_option("--host",
                       dest="vhm_host", default='')
     parser.add_option("--protocol",

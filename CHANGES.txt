@@ -1,3 +1,11 @@
+1.8.6 (2014-08-29)
+==================
+
+- Add the ``add-mountpoint`` option to automatically create the mount-point if
+  it does not exist.
+  [fabiorauber]
+
+
 1.8.5 (xxxx-xx-xx)
 ==================
 
