@@ -13,6 +13,8 @@
   Zope and the ZEO server.
   [muellert]
 
+- Clean up the docs and separate the options by headers.
+  [claytron]
 
 1.8.2 (2013-04-08)
 ==================

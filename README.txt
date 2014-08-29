@@ -1,5 +1,5 @@
 Introduction
-============
+************
 
 This recipe enables you to create and update a Plone site as part of a
 buildout run. This recipe only aims to run profiles and Quickinstall
