@@ -23,7 +23,7 @@ zeoserver
 container-path
     The path (relative from Zope root) to the container that should hold the
     Plone site.
-    Default: ``\``
+    Default: ``/``
 
 default-language
     The default language of the Plone site.

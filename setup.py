@@ -12,24 +12,24 @@ def read(*rnames):
 version = '1.8.6'
 
 long_description = (
-    read('README.txt')
+    read('README.rst')
     + '\n' +
     'Detailed Documentation\n'
     '**********************\n'
     + '\n' +
-    read('collective', 'recipe', 'plonesite', 'README.txt')
+    read('collective', 'recipe', 'plonesite', 'README.rst')
     + '\n' +
     'Contributors\n'
     '************\n'
     + '\n' +
-    read('CONTRIBUTORS.txt')
+    read('CONTRIBUTORS.rst')
     + '\n' +
     'Change history\n'
     '**************\n'
     + '\n' +
-    read('CHANGES.txt')
+    read('CHANGES.rst')
     + '\n' +
-   'Download\n'
+    'Download\n'
     '********\n')
 
 entry_point = 'collective.recipe.plonesite:Recipe'
