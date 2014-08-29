@@ -1,13 +1,9 @@
-1.8.6 (2014-08-29)
+1.9.0 (2014-08-29)
 ==================
 
 - Add the ``add-mountpoint`` option to automatically create the mount-point if
   it does not exist.
   [fabiorauber]
-
-
-1.8.5 (xxxx-xx-xx)
-==================
 
 - Add options for running profile upgrade steps if ``collective.upgrade`` is
   installed.
@@ -88,9 +84,6 @@
 
 - ``protocol`` recipe option specifies a protocol to be used in 
   a VirtualHostMonster path from extra recipe scripts. [nrb]
-
-1.5.1 (Unreleased)
-==================
 
 - Fixed typo in documentation.
   [hvelarde]
