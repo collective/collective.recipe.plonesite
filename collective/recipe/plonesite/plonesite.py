@@ -99,18 +99,16 @@ def create(
             # least provide:
             # extension_ids
             # setup_content (plone default is currently 'true')
-            from Products.CMFPlone.factory import addPloneSite
-            extension_profiles = (
-                'plonetheme.classic:default',
-                'plonetheme.sunburst:default',
-                )
-            addPloneSite(
-                container,
-                site_id,
-                extension_ids=extension_profiles,
-                setup_content=False,
-                default_language=default_language,
-                )
+            from Products.CMFPlone.browser import admin
+            container.REQUEST.form.update({
+                'form.submitted': True,
+                'site_id': site_id,
+                'setup_content': False,
+                'default_language': default_language})
+            form = container.restrictedTraverse('@@plone-addsite')
+            # Skip the template rendering
+            form.index = lambda: None
+            form()
         else:
             factory = container.manage_addProduct['CMFPlone']
             factory.addPloneSite(site_id, create_userfolder=1)
