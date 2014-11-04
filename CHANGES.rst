@@ -1,3 +1,9 @@
+1.9.2 (Unreleased)
+==================
+
+- Restore Python 2.4 compatibility
+  [bryanlandia]
+
 1.9.1 (Unreleased)
 ==================
 

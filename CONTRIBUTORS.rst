@@ -9,4 +9,5 @@
 - David Blewett [davidblewett]
 - Toni Mueller [muellert]
 - Fabio Rauber [fabiorauber]
+- Bryan Wilson [bryanlandia]
 
