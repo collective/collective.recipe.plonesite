@@ -211,7 +211,7 @@ def main(app, parser):
             try:
                app.manage_addProduct['ZODBMountPoint'].manage_addMounts(
                    paths=[container_path], create_mount_points=1)
-            except Exception:  # remove Exception as... to keep py2.4 support
+            except Exception, e:  # remove Exception as... to keep py2.4 support
                msg = 'An error ocurred while trying to add ZODB Mount Point %s: %s'
                raise zc.buildout.UserError(msg % (container_path, str(e)))
         else:
