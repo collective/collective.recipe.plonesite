@@ -12,6 +12,11 @@ admin-user
     The id of an admin user that will be used as the ``Manager``.
     Default: ``admin``
 
+admin-password
+    The password for the admin user. This is only needed when the ``use_vhm``
+    option is set and the root object of the site is not accessible by
+    ``Anonymous``.
+
 instance
     The name of the instance that will run the script.
     Default: instance

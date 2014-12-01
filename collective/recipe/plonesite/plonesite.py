@@ -1,3 +1,4 @@
+import base64
 import logging
 import os
 from datetime import datetime
@@ -7,6 +8,7 @@ try:
 except ImportError:
     # Plone >= 4.3
     from zope.component.hooks import setSite  # NOQA
+from zExceptions.unauthorized import Unauthorized
 import zc.buildout
 import transaction
 from AccessControl.SecurityManagement import newSecurityManager
@@ -138,6 +140,7 @@ def main(app, parser):
     site_id = options.site_id
     site_replace = options.site_replace
     admin_user = options.admin_user
+    admin_password = options.admin_password
     post_extras = options.post_extras
     pre_extras = options.pre_extras
     container_path = options.container_path
@@ -236,10 +239,21 @@ def main(app, parser):
         vhm_string = "/VirtualHostBase/%s/%s:%s/%s/VirtualHostRoot" % (
             protocol, host, port, site_id)
         portal.REQUEST['PARENTS'] = [app]
-        traverse = portal.REQUEST.traverse
-        traverse(vhm_string)
-        newSecurityManager(None, user)
-        logger.info("******* SET VHM INFO TO %s *******", vhm_string)
+        try:
+            portal.REQUEST._auth = 'Basic %s' % base64.encodestring(
+                '%s:%s' % (admin_user, admin_password))
+            traverse = portal.REQUEST.traverse
+            traverse(vhm_string)
+            newSecurityManager(None, user)
+            logger.info("******* SET VHM INFO TO %s *******", vhm_string)
+        except Unauthorized:
+            logger.info(
+                "******* UNABLE TO SET VHM, this happens when the root object "
+                "in the site is not accessible by Anonymous. If you provide "
+                "the admin-password in the plonesite part, this "
+                "error can be avoided. Otherwise, you need to publish that "
+                "object. *******"
+            )
 
     if portal and created:
         quickinstall(portal, products_initial)
@@ -290,6 +304,8 @@ if __name__ == '__main__':
                       dest="default_language", default="en")
     parser.add_option("-u", "--admin-user",
                       dest="admin_user", default="admin")
+    parser.add_option("-P", "--admin-password",
+                      dest="admin_password", default="")
 
     parser.add_option("-p", "--products-initial",
                       dest="products_initial", action="append", default=[])

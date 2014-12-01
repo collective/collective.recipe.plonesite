@@ -41,6 +41,7 @@ class Recipe(object):
         self.site_replace = options.get('site-replace', '').lower() in TRUISMS
         self.default_language = options.get('default-language', 'en')
         self.admin_user = options.get('admin-user', 'admin')
+        self.admin_password = options.get('admin-password', '')
 
         self.products_initial = options.get('products-initial', "").split()
         self.profiles_initial = options.get('profiles-initial', "").split()
@@ -154,6 +155,7 @@ class Recipe(object):
         if self.site_replace:
             args.append("--site-replace")
         args.append("--admin-user=%s" % self.admin_user)
+        args.append("--admin-password=%s" % self.admin_password)
         args.append("--container-path=%s" % self.container_path)
         args.append("--default-language=%s" % self.default_language)
         args.append("--host=%s" % self.vhm_host)

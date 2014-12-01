@@ -1,6 +1,10 @@
 1.9.1 (Unreleased)
 ==================
 
+- Add ability to ``use_vhm`` when the homepage is not accessible by
+  ``Anonymous`` by setting the ``admin-password`` option.
+  [claytron]
+
 - PEP8 and pyflakes
   [claytron]
 
