@@ -62,7 +62,8 @@ class Recipe(object):
         self.use_vhm = options.get('use-vhm', True)
 
         self.use_sudo = options.get('use-sudo', False)
-        self.add_mountpoint = options.get('add-mountpoint', '').lower() in TRUISMS
+        add_mountpoint = options.get('add-mountpoint', '').lower()
+        self.add_mountpoint = add_mountpoint in TRUISMS
 
         self.log_level = buildout._log_level
         options['args'] = self.createArgs()
@@ -86,9 +87,8 @@ class Recipe(object):
         self.zeoserver = options.get('zeoserver', False)
         if self.zeoserver:
             if is_win:
-                if os.path.exists(os.path.join(
-                    options['bin-directory'],
-                    'zeoservice.exe')):
+                exe = os.path.join(options['bin-directory'], 'zeoservice.exe')
+                if os.path.exists(exe):
                     zeo_script = 'zeoservice.exe'
                 else:
                     zeo_script = "%s_service.exe" % self.zeoserver
@@ -117,8 +117,8 @@ class Recipe(object):
                 zeo_cmd = "%(bin-directory)s/%(zeo-script)s" % options
                 zeo_start = "%s start" % zeo_cmd
 
-		if self.use_sudo:
-		    zeo_start = "sudo " + zeo_start
+                if self.use_sudo:
+                    zeo_start = "sudo " + zeo_start
                 subprocess.call(zeo_start.split())
 
             # XXX This seems wrong...
@@ -133,8 +133,8 @@ class Recipe(object):
 
             if self.zeoserver:
                 zeo_stop = "%s stop" % zeo_cmd
-		if self.use_sudo:
-		    zeo_stop = "sudo " + zeo_stop
+                if self.use_sudo:
+                    zeo_stop = "sudo " + zeo_stop
                 subprocess.call(zeo_stop.split())
             if self.after_install:
                 system(self.after_install)

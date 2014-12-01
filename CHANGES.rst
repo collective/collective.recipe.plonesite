@@ -1,11 +1,11 @@
-1.9.2 (Unreleased)
+1.9.1 (Unreleased)
 ==================
+
+- PEP8 and pyflakes
+  [claytron]
 
 - Restore Python 2.4 compatibility
   [bryanlandia]
-
-1.9.1 (Unreleased)
-==================
 
 - Plone 5 compat, re-use add site form default profile logic.
   [@rpatterson]

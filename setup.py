@@ -9,7 +9,7 @@ from setuptools import setup, find_packages
 def read(*rnames):
     return open(os.path.join(os.path.dirname(__file__), *rnames)).read()
 
-version = '1.9.3'
+version = '1.9.1'
 
 long_description = (
     read('README.rst')
@@ -45,12 +45,12 @@ setup(
     # Get more strings from:
     # http://www.python.org/pypi?%3Aaction=list_classifiers
     classifiers=[
-      'Framework :: Buildout',
-      'Intended Audience :: Developers',
-      'Topic :: Software Development :: Build Tools',
-      'Topic :: Software Development :: Libraries :: Python Modules',
-      'License :: OSI Approved :: Zope Public License',
-      ],
+        'Framework :: Buildout',
+        'Intended Audience :: Developers',
+        'Topic :: Software Development :: Build Tools',
+        'Topic :: Software Development :: Libraries :: Python Modules',
+        'License :: OSI Approved :: Zope Public License',
+    ],
     keywords='plone buildout recipe',
     author='Clayton Parker',
     author_email='info@sixfeetup.com',
@@ -71,4 +71,4 @@ setup(
         upgrade=['collective.upgrade>=1.0rc1']),
     test_suite='collective.recipe.plonesite.tests.test_docs.test_suite',
     entry_points=entry_points,
-    )
+)

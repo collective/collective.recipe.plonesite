@@ -99,7 +99,6 @@ def create(
             # least provide:
             # extension_ids
             # setup_content (plone default is currently 'true')
-            from Products.CMFPlone.browser import admin
             container.REQUEST.form.update({
                 'form.submitted': True,
                 'site_id': site_id,
@@ -202,22 +201,27 @@ def main(app, parser):
     else:
         raise zc.buildout.UserError('The admin-user specified does not exist')
 
-    
     # Verify if the mount-point exists
     try:
         app.unrestrictedTraverse(container_path)
     except KeyError:
         if add_mountpoint:
             try:
-               app.manage_addProduct['ZODBMountPoint'].manage_addMounts(
-                   paths=[container_path], create_mount_points=1)
-            except Exception, e:  # remove Exception as... to keep py2.4 support
-               msg = 'An error ocurred while trying to add ZODB Mount Point %s: %s'
-               raise zc.buildout.UserError(msg % (container_path, str(e)))
+                app.manage_addProduct['ZODBMountPoint'].manage_addMounts(
+                    paths=[container_path], create_mount_points=1)
+            except Exception, e:  # remove Exception as, to keep py2.4 support
+                msg = (
+                    'An error ocurred while trying to add ZODB '
+                    'Mount Point %s: %s'
+                )
+                raise zc.buildout.UserError(msg % (container_path, str(e)))
         else:
-            msg = 'No ZODB Mount Point at container-path %s and add-mountpoint not specified.'
+            msg = (
+                'No ZODB Mount Point at container-path %s and add-mountpoint '
+                'not specified.'
+            )
             raise zc.buildout.UserError(msg % container_path)
-	 
+
     container = app.unrestrictedTraverse(container_path)
     # create the plone site if it doesn't exist
     portal, created = create(container, site_id, products_initial,
