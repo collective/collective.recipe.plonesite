@@ -1,4 +1,4 @@
-1.9.1 (Unreleased)
+1.9.1 (2014-12-01)
 ==================
 
 - Add ability to ``use_vhm`` when the homepage is not accessible by
