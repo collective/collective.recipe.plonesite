@@ -1,4 +1,4 @@
-1.9.2 (Unreleased)
+1.9.2 (2015-06-22)
 ==================
 
 - Only use valid Python logging levels. Round up to the closest level
