@@ -1,7 +1,9 @@
 1.9.2 (Unreleased)
 ==================
 
-
+- Only use valid Python logging levels. Round up to the closest level
+  if the passed in value does not exist.
+  [claytron]
 
 1.9.1 (2014-12-01)
 ==================

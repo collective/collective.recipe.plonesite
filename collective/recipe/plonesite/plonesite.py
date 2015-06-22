@@ -1,6 +1,7 @@
 import base64
 import logging
 import os
+from bisect import bisect
 from datetime import datetime
 try:
     # Plone < 4.3
@@ -160,6 +161,22 @@ def main(app, parser):
     except ValueError:
         msg = 'The configured log-level is not valid: %s' % log_level
         raise zc.buildout.UserError(msg)
+    current_log_levels = [
+        logging.NOTSET,
+        logging.DEBUG,
+        logging.INFO,
+        logging.WARNING,
+        logging.ERROR,
+        logging.CRITICAL,
+    ]
+    if log_level not in current_log_levels:
+        try:
+            # Find the nearest log level and use that
+            lvl_index = bisect(current_log_levels, log_level)
+            log_level = current_log_levels[lvl_index]
+        except IndexError:
+            # If the log level is higher, catch that
+            log_level = 50
     root_logger = logging.getLogger()
     root_logger.setLevel(log_level)
     logger.setLevel(logging.getLevelName(log_level))
