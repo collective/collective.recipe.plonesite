@@ -3,6 +3,7 @@ import logging
 import os
 from bisect import bisect
 from datetime import datetime
+from pkg_resources import get_distribution
 try:
     # Plone < 4.3
     from zope.app.component.hooks import setSite
@@ -129,11 +130,12 @@ def create(
 def setDefaultLanguageOnPortalLanguages(plone, default_language):
     # Plone factory does not set default_language on portal_languages (until
     # 4.1)
-    portal_languages = plone.portal_languages
-    portal_languages.setDefaultLanguage(default_language)
-    supported = portal_languages.getSupportedLanguages()
-    portal_languages.removeSupportedLanguages(supported)
-    portal_languages.addSupportedLanguage(default_language)
+    if get_distribution('Products.CMFPlone').version < '4.1':
+        portal_languages = plone.portal_languages
+        portal_languages.setDefaultLanguage(default_language)
+        supported = portal_languages.getSupportedLanguages()
+        portal_languages.removeSupportedLanguages(supported)
+        portal_languages.addSupportedLanguage(default_language)
 
 
 def main(app, parser):
