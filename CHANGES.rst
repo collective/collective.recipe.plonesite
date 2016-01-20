@@ -1,5 +1,7 @@
-1.9.4 (unreleased)
+1.9.4 (2016-01-20)
 ==================
+
+- Nothing new, but pypi was having issues with 1.9.3
 
 1.9.3 (2016-01-15)
 ==================
