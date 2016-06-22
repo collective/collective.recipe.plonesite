@@ -59,8 +59,11 @@ def runProfiles(plone, profiles):
             profile = "profile-%s" % profile
         if pre_plone3:
             stool.setImportContext(profile)
-            stool.runAllImportSteps()
-        else:
+            continue
+        try:
+            stool.runAllImportStepsFromProfile(profile,
+                                               dependency_strategy='reapply')
+        except:
             stool.runAllImportStepsFromProfile(profile)
 
 
