@@ -1,5 +1,11 @@
-1.9.5 (unreleased)
+1.9.5 (2016-06-22)
 ==================
+
+-  for GenericSetup 1.8.0+ set runAllImportStepsFromProfile to reapply
+   the dependency profiles. This will keep our buildouts running as
+   previously expected, with the profiles listed in the policy's metadata.xml
+   being run every time
+   [cdw9]
 
 1.9.4 (2016-01-20)
 ==================
