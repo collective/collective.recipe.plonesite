@@ -4,6 +4,7 @@ import os
 from bisect import bisect
 from datetime import datetime
 from pkg_resources import get_distribution
+from pkg_resources import parse_version
 try:
     # Plone < 4.3
     from zope.app.component.hooks import setSite
@@ -43,12 +44,8 @@ def getProductsWithSpace(opts):
 
 
 def has_setup_content():
-    try:
-        from plone.app.upgrade import v41
-        v41  # please pyflakes
-        return True
-    except ImportError:
-        return False
+    version = parse_version(get_distribution('Products.CMFPlone').version)
+    return version >= parse_version('4.1')
 
 
 def runProfiles(plone, profiles):
