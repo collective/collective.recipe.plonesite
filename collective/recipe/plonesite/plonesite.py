@@ -1,23 +1,28 @@
+from AccessControl.SecurityManagement import newSecurityManager
+from AccessControl.SecurityManagement import noSecurityManager
+from bisect import bisect
+from datetime import datetime
+from optparse import OptionParser
+from pkg_resources import get_distribution
+from pkg_resources import parse_version
+from six import PY3
+from six.moves import filter
+from Testing import makerequest
+from zExceptions.unauthorized import Unauthorized
+
 import base64
 import logging
 import os
-from bisect import bisect
-from datetime import datetime
-from pkg_resources import get_distribution
-from pkg_resources import parse_version
+import transaction
+import zc.buildout
+
+
 try:
     # Plone < 4.3
     from zope.app.component.hooks import setSite
 except ImportError:
     # Plone >= 4.3
     from zope.component.hooks import setSite  # NOQA
-from zExceptions.unauthorized import Unauthorized
-import zc.buildout
-import transaction
-from AccessControl.SecurityManagement import newSecurityManager
-from AccessControl.SecurityManagement import noSecurityManager
-from Testing import makerequest
-from optparse import OptionParser
 
 pre_plone3 = False
 try:
@@ -70,8 +75,8 @@ def quickinstall(plone, products):
     not_installed_ids = [
         x['id'] for x in qit.listInstallableProducts(skipInstalled=1)]
     installed_ids = [x['id'] for x in qit.listInstalledProducts()]
-    installed_products = filter(installed_ids.count, products)
-    not_installed = filter(not_installed_ids.count, products)
+    installed_products = list(filter(installed_ids.count, products))
+    not_installed = list(filter(not_installed_ids.count, products))
     if installed_products:
         qit.reinstallProducts(installed_products)
     if not_installed_ids:
@@ -231,7 +236,7 @@ def main(app, parser):
             try:
                 app.manage_addProduct['ZODBMountPoint'].manage_addMounts(
                     paths=[container_path], create_mount_points=1)
-            except Exception, e:  # remove Exception as, to keep py2.4 support
+            except Exception as e:  # remove Exception as, to keep py2.4 support
                 msg = (
                     'An error ocurred while trying to add ZODB '
                     'Mount Point %s: %s'
@@ -259,8 +264,12 @@ def main(app, parser):
             protocol, host, port, site_id)
         portal.REQUEST['PARENTS'] = [app]
         try:
-            portal.REQUEST._auth = 'Basic %s' % base64.encodestring(
-                '%s:%s' % (admin_user, admin_password))
+            if PY3:
+                portal.REQUEST._auth = b'Basic ' + base64.b64encode(
+                    ('%s:%s' % (admin_user, admin_password)).encode())
+            else:
+                portal.REQUEST._auth = 'Basic %s' % base64.encodestring(
+                    '%s:%s' % (admin_user, admin_password))
             traverse = portal.REQUEST.traverse
             traverse(vhm_string)
             newSecurityManager(None, user)
@@ -281,7 +290,7 @@ def main(app, parser):
 
     def runExtras(portal, script_path):
         if os.path.exists(script_path):
-            execfile(script_path)
+            exec(compile(open(script_path, "rb").read(), script_path, 'exec'))
         else:
             msg = 'The path to the extras script does not exist: %s'
             raise zc.buildout.UserError(msg % script_path)

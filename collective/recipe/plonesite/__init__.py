@@ -2,9 +2,10 @@
 """Recipe plonesite"""
 
 import os
-import sys
-import subprocess
 import pkg_resources
+import subprocess
+import sys
+
 
 TRUISMS = [
     'yes',

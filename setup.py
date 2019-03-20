@@ -2,8 +2,10 @@
 """
 This module contains the tool of collective.recipe.plonesite
 """
+from setuptools import find_packages
+from setuptools import setup
+
 import os
-from setuptools import setup, find_packages
 
 
 def read(*rnames):
