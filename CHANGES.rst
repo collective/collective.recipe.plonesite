@@ -1,8 +1,8 @@
 1.10.1 (unreleased)
 ===================
 
-- Nothing changed yet.
-
+- Fix brownbag release
+  [sneridagh]
 
 1.10.0 (2019-03-20)
 ===================

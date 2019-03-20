@@ -1,2 +1,3 @@
-include *.txt
-recursive-include collective *.txt *.py
+include *.rst
+recursive-include collective *.rst *.py
+global-exclude *.pyc
