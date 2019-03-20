@@ -1,6 +1,8 @@
 1.9.6 (unreleased)
 ==================
 
+- Python3 port
+  [sneridagh]
 
 1.9.5 (2016-06-22)
 ==================
@@ -122,7 +124,7 @@
 1.6 (2012-06-26)
 ================
 
-- Add VirtualHostMonster path support for the 'portal' variable 
+- Add VirtualHostMonster path support for the 'portal' variable
   available in ``pre-extras`` and ``post-extras`` scripts. [nrb]
 
 - ``host`` recipe option specifices a hostname to be used in
@@ -131,7 +133,7 @@
 - ``port`` recipe option specifies a port to be used in a
   VirtualHostMonster path for extra recipe scripts. [nrb]
 
-- ``protocol`` recipe option specifies a protocol to be used in 
+- ``protocol`` recipe option specifies a protocol to be used in
   a VirtualHostMonster path from extra recipe scripts. [nrb]
 
 - Fixed typo in documentation.
@@ -185,7 +187,7 @@
   executable.
   [claytron]
 
-- Use the ``plone`` variable not ``portal`` otherwise ``plonesite.py`` raises 
+- Use the ``plone`` variable not ``portal`` otherwise ``plonesite.py`` raises
   ``NameError: global name 'portal' is not defined`` on a new install.
   [pelle]
 
@@ -209,7 +211,7 @@
 - Update docs with info about how to add a ``Product``
   [claytron]
 
-- Adjusted the support for Plone4 since the ``addPloneSite()`` has 
+- Adjusted the support for Plone4 since the ``addPloneSite()`` has
   changed slightly.
   [pelle]
 
@@ -256,7 +258,7 @@
 0.6 (2008-12-16)
 ================
 
-- Make ``admin-user`` configuration option truly optional per the documentation.  
+- Make ``admin-user`` configuration option truly optional per the documentation.
   Fallback to ``admin`` which would be the common default per ZopeSkel's
   plone3_buildout template
   [andrewb]

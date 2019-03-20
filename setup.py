@@ -2,8 +2,10 @@
 """
 This module contains the tool of collective.recipe.plonesite
 """
+from setuptools import find_packages
+from setuptools import setup
+
 import os
-from setuptools import setup, find_packages
 
 
 def read(*rnames):
@@ -62,7 +64,8 @@ setup(
     zip_safe=False,
     install_requires=[
         'setuptools',
-        'zc.buildout'
+        'zc.buildout',
+        'six'
         # -*- Extra requirements: -*-
     ],
     tests_require=tests_require,
