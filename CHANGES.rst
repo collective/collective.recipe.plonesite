@@ -1,4 +1,4 @@
-1.10.1 (unreleased)
+1.11.0 (2019-03-20)
 ===================
 
 - Fix brownbag release
