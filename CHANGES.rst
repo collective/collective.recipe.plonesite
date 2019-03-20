@@ -1,7 +1,7 @@
 1.9.6 (unreleased)
 ==================
 
-- Python3 port
+- Python3 compatibility
   [sneridagh]
 
 1.9.5 (2016-06-22)
