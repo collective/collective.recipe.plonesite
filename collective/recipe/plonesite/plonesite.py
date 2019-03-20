@@ -290,7 +290,10 @@ def main(app, parser):
 
     def runExtras(portal, script_path):
         if os.path.exists(script_path):
-            exec(compile(open(script_path, "rb").read(), script_path, 'exec'))
+            if PY3:
+                exec(compile(open(script_path, "rb").read(), script_path, 'exec'))
+            else:
+                execfile(script_path)
         else:
             msg = 'The path to the extras script does not exist: %s'
             raise zc.buildout.UserError(msg % script_path)
