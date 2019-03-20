@@ -6,6 +6,7 @@ from optparse import OptionParser
 from pkg_resources import get_distribution
 from pkg_resources import parse_version
 from six import PY3
+from six import exec_
 from six.moves import filter
 from Testing import makerequest
 from zExceptions.unauthorized import Unauthorized
@@ -289,9 +290,10 @@ def main(app, parser):
         logger.info("Finished")
 
     def runExtras(portal, script_path):
+        print(PY3)
         if os.path.exists(script_path):
             if PY3:
-                exec(compile(open(script_path, "rb").read(), script_path, 'exec'))
+                exec_(compile(open(script_path, "rb").read(), script_path, 'exec'))
             else:
                 execfile(script_path)
         else:
