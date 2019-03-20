@@ -1,5 +1,5 @@
-1.9.6 (unreleased)
-==================
+1.10.0 (2019-03-20)
+===================
 
 - Python3 compatibility
   [sneridagh]
