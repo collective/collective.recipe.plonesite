@@ -55,6 +55,8 @@ but have less verbosity when the site is actually running.
 Install Products
 ----------------
 
+DEPRECATION NOTICE: If Plone 6 is used, it no longer uses Quickinstaller, use profiles instead.
+
 products-initial
     A list of products to quick install just after initial site
     creation. See above for information about the product name
@@ -139,7 +141,7 @@ enabled
     Option to start up the instance/zeoserver. Default: true. This can
     be a useful option from the command line if you do not want to
     start up Zope, but still want to run the complete buildout.
-    
+
     $ bin/buildout -Nv plonesite:enabled=false
 
 VHM (VirtualHostMonster)
@@ -170,33 +172,33 @@ Example
 Here is an example buildout.cfg with the plonesite recipe::
 
     [buildout]
-    parts = 
+    parts =
         zope2
         instance
         zeoserver
         plonesite
-    
+
     [zope2]
     recipe = plone.recipe.zope2install
     ...
-    
+
     [instance]
     recipe = plone.recipe.zope2instance
     ...
-    eggs = 
+    eggs =
         ...
         my.package
         my.other.package
-    
-    zcml = 
+
+    zcml =
         ...
         my.package
         my.other.package
-    
+
     [zeoserver]
     recipe = plone.recipe.zope2zeoserver
     ...
-    
+
     [plonesite]
     recipe = collective.recipe.plonesite
     site-id = test
@@ -204,7 +206,7 @@ Here is an example buildout.cfg with the plonesite recipe::
     zeoserver = zeoserver
     # A profile with proper upgrade steps
     profiles-initial = addon.package:default
-    profiles = 
+    profiles =
     # A profile not using upgrade steps, such as a simple policy package
         my.package:default
     upgrade-portal = True
@@ -224,20 +226,20 @@ Example with Plone 4 content enabled
 Here is another example buildout.cfg with the plone4site recipe::
 
     [buildout]
-    parts = 
+    parts =
         ...
         plone4site
-    
+
     [plone4site]
     recipe = collective.recipe.plonesite
     site-id = test
     instance = instance
     zeoserver = zeoserver
     # Create default plone content like News, Events...
-    profiles-initial = 
-        Products.CMFPlone:plone-content 
+    profiles-initial =
+        Products.CMFPlone:plone-content
         my.package:initial
-    profiles = 
+    profiles =
         my.package:default
         my.other.package:default
 
@@ -256,13 +258,13 @@ This uses collective.recipe.filestorage to create the mount point configuration:
         zeoserver
         plonesite1
         plonesite2
-    
+
     [filestorage]
     recipe = collective.recipe.filestorage
-    parts = 
+    parts =
         mp1
         mp2
-    
+
     [instance]
     recipe = plone.recipe.zope2instance
     ...
@@ -270,23 +272,23 @@ This uses collective.recipe.filestorage to create the mount point configuration:
         ...
         my.package
         my.other.package
-    
+
     zcml =
         ...
         my.package
         my.other.package
-    
+
     [zeoserver]
     recipe = plone.recipe.zope2zeoserver
     ...
-    
+
     [plonesite1]
     recipe = collective.recipe.plonesite
     add-mountpoint = true
     container-path = /mp1
     profiles-initial = Products.CMFPlone:plone-content
     site-id = portal
-    
+
     [plonesite2]
     recipe = collective.recipe.plonesite
     add-mountpoint = true

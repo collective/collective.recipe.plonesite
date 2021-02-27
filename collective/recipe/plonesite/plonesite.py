@@ -14,9 +14,16 @@ from zExceptions.unauthorized import Unauthorized
 import base64
 import logging
 import os
+import pkg_resources
 import transaction
 import zc.buildout
 
+CMFPLONE_VERSION = pkg_resources.get_distribution('Products.CMFPlone').version
+
+if CMFPLONE_VERSION.startswith('6'):
+    PLONE6 = True
+else:
+    PLONE6 = False
 
 try:
     # Plone < 4.3
@@ -71,17 +78,19 @@ def runProfiles(plone, profiles):
 
 
 def quickinstall(plone, products):
-    logger.info("Quick installing: %s", products)
-    qit = plone.portal_quickinstaller
-    not_installed_ids = [
-        x['id'] for x in qit.listInstallableProducts(skipInstalled=1)]
-    installed_ids = [x['id'] for x in qit.listInstalledProducts()]
-    installed_products = list(filter(installed_ids.count, products))
-    not_installed = list(filter(not_installed_ids.count, products))
-    if installed_products:
-        qit.reinstallProducts(installed_products)
-    if not_installed_ids:
-        qit.installProducts(not_installed)
+    if PLONE6:
+        logger.info("Quickinstall products is deprecated in Plone 6: Use profiles instead, while trying to install %s", products)
+    else:
+        qit = plone.portal_quickinstaller
+        not_installed_ids = [
+            x['id'] for x in qit.listInstallableProducts(skipInstalled=1)]
+        installed_ids = [x['id'] for x in qit.listInstalledProducts()]
+        installed_products = list(filter(installed_ids.count, products))
+        not_installed = list(filter(not_installed_ids.count, products))
+        if installed_products:
+            qit.reinstallProducts(installed_products)
+        if not_installed_ids:
+            qit.installProducts(not_installed)
 
 
 def create(
