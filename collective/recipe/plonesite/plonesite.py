@@ -78,19 +78,17 @@ def runProfiles(plone, profiles):
 
 
 def quickinstall(plone, products):
-    if PLONE6:
-        logger.info("Deprecation notice: Install products via quickinstall is deprecated in Plone 6. Use profiles instead.")
-    else:
-        qit = plone.portal_quickinstaller
-        not_installed_ids = [
-            x['id'] for x in qit.listInstallableProducts(skipInstalled=1)]
-        installed_ids = [x['id'] for x in qit.listInstalledProducts()]
-        installed_products = list(filter(installed_ids.count, products))
-        not_installed = list(filter(not_installed_ids.count, products))
-        if installed_products:
-            qit.reinstallProducts(installed_products)
-        if not_installed_ids:
-            qit.installProducts(not_installed)
+    logger.warn("Installing products by name is no longer supported in Plone 6. Use profiles instead.")
+    qit = plone.portal_quickinstaller
+    not_installed_ids = [
+        x['id'] for x in qit.listInstallableProducts(skipInstalled=1)]
+    installed_ids = [x['id'] for x in qit.listInstalledProducts()]
+    installed_products = list(filter(installed_ids.count, products))
+    not_installed = list(filter(not_installed_ids.count, products))
+    if installed_products:
+        qit.reinstallProducts(installed_products)
+    if not_installed_ids:
+        qit.installProducts(not_installed)
 
 
 def create(
@@ -294,7 +292,10 @@ def main(app, parser):
             )
 
     if portal and created:
-        quickinstall(portal, products_initial)
+        if products_initial and PLONE6:
+            raise zc.buildout.UserError('Installing (initial) products via quickinstall is deprecated in Plone 6. Use profiles instead.')
+        if products_initial and not PLONE6:
+            quickinstall(portal, products_initial)
         runProfiles(portal, profiles_initial)
         logger.info("Finished")
 
@@ -321,7 +322,9 @@ def main(app, parser):
             upgrade_profiles=options.upgrade_profiles,
             upgrade_all_profiles=options.upgrade_all_profiles)
 
-    if products:
+    if products and PLONE6:
+        raise zc.buildout.UserError('Installing products via quickinstall is deprecated in Plone 6. Use profiles instead.')
+    if products and not PLONE6:
         quickinstall(portal, products)
     if profiles:
         runProfiles(portal, profiles)
