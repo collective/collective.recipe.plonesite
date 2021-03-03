@@ -18,9 +18,9 @@ import pkg_resources
 import transaction
 import zc.buildout
 
-CMFPLONE_VERSION = pkg_resources.get_distribution('Products.CMFPlone').version
-
-if CMFPLONE_VERSION.startswith('6'):
+if pkg_resources.parse_version(
+    pkg_resources.get_distribution("Products.CMFPlone").version
+) >= pkg_resources.parse_version("6.0a1.dev0"):
     PLONE6 = True
 else:
     PLONE6 = False
@@ -79,7 +79,7 @@ def runProfiles(plone, profiles):
 
 def quickinstall(plone, products):
     if PLONE6:
-        logger.info("Quickinstall products is deprecated in Plone 6: Use profiles instead, while trying to install %s", products)
+        logger.info("Deprecation notice: Install products via quickinstall is deprecated in Plone 6. Use profiles instead.")
     else:
         qit = plone.portal_quickinstaller
         not_installed_ids = [

@@ -55,7 +55,7 @@ but have less verbosity when the site is actually running.
 Install Products
 ----------------
 
-DEPRECATION NOTICE: If Plone 6 is used, it no longer uses Quickinstaller, use profiles instead.
+DEPRECATION NOTICE: Installing products in Plone 6 is deprecated since it no longer has Quickinstaller: use profiles instead.
 
 products-initial
     A list of products to quick install just after initial site
