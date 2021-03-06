@@ -14,9 +14,16 @@ from zExceptions.unauthorized import Unauthorized
 import base64
 import logging
 import os
+import pkg_resources
 import transaction
 import zc.buildout
 
+if pkg_resources.parse_version(
+    pkg_resources.get_distribution("Products.CMFPlone").version
+) >= pkg_resources.parse_version("6.0a1.dev0"):
+    PLONE6 = True
+else:
+    PLONE6 = False
 
 try:
     # Plone < 4.3
@@ -71,7 +78,7 @@ def runProfiles(plone, profiles):
 
 
 def quickinstall(plone, products):
-    logger.info("Quick installing: %s", products)
+    logger.warn("Installing products by name is no longer supported in Plone 6. Use profiles instead.")
     qit = plone.portal_quickinstaller
     not_installed_ids = [
         x['id'] for x in qit.listInstallableProducts(skipInstalled=1)]
@@ -285,7 +292,10 @@ def main(app, parser):
             )
 
     if portal and created:
-        quickinstall(portal, products_initial)
+        if products_initial and PLONE6:
+            raise zc.buildout.UserError('Installing (initial) products via quickinstall is deprecated in Plone 6. Use profiles instead.')
+        if products_initial and not PLONE6:
+            quickinstall(portal, products_initial)
         runProfiles(portal, profiles_initial)
         logger.info("Finished")
 
@@ -312,7 +322,9 @@ def main(app, parser):
             upgrade_profiles=options.upgrade_profiles,
             upgrade_all_profiles=options.upgrade_all_profiles)
 
-    if products:
+    if products and PLONE6:
+        raise zc.buildout.UserError('Installing products via quickinstall is deprecated in Plone 6. Use profiles instead.')
+    if products and not PLONE6:
         quickinstall(portal, products)
     if profiles:
         runProfiles(portal, profiles)
