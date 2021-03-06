@@ -1,4 +1,4 @@
-1.11.1 (unreleased)
+1.12.0 (2021-03-06)
 ===================
 
 - Add compatibility with Plone 6
