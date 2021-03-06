@@ -1,8 +1,8 @@
 1.11.1 (unreleased)
 ===================
 
-- Nothing changed yet.
-
+- Add compatibility with Plone 6
+  [sneridagh]
 
 1.11.0 (2019-03-20)
 ===================
