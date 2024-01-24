@@ -38,11 +38,13 @@ use-sudo
     Run the task under a different user, as specified in the
     appropriate instance's buildout section. You need to configure
     sudo appropriately.
+    Default: ``false``
 
 add-mountpoint
     Adds the ZODB Mount Point at the path specified by ``container-path``, if
     it doesn't exist. Very handy when used in conjunction with
     collective.recipe.filestorage.
+    Default: ``false``
 
 Logging
 -------
@@ -140,7 +142,7 @@ site-replace
 enabled
     Option to start up the instance/zeoserver. Default: true. This can
     be a useful option from the command line if you do not want to
-    start up Zope, but still want to run the complete buildout.
+    start up Zope, but still want to run the complete buildout. Default: false
 
     $ bin/buildout -Nv plonesite:enabled=false
 

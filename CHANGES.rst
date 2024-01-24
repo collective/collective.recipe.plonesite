@@ -1,8 +1,8 @@
 1.12.1 (unreleased)
 ===================
 
-- Nothing changed yet.
-
+- Fix parsing of use-sudo=false and uniform parsing other boolean options
+  [pgrunewald]
 
 1.12.0 (2021-03-06)
 ===================
