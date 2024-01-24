@@ -2,9 +2,11 @@
 """Recipe plonesite"""
 
 import os
-import pkg_resources
 import subprocess
 import sys
+
+import pkg_resources
+import six
 
 
 TRUISMS = [
@@ -16,6 +18,29 @@ TRUISMS = [
     'ok',
     '1',
 ]
+
+
+FALSISMS = [
+    'no',
+    'n',
+    'off',
+    'false',
+    'f',
+    '0'
+]
+
+
+def bool_option(options, name, default=None):
+    value = options.get(name, default)
+    if isinstance(value, six.string_types):
+        value = value.strip().lower()
+        if value in TRUISMS:
+            return True
+        elif value in FALSISMS:
+            return False
+        else:
+            raise ValueError("String is not true/false: %r" % value)
+    return bool(value)
 
 
 def system(c):
@@ -39,7 +64,7 @@ class Recipe(object):
         # all the options that will be passed on to the 'run' script
         self.site_id = options.get('site-id', 'Plone')
         self.container_path = options.get('container-path', '/')
-        self.site_replace = options.get('site-replace', '').lower() in TRUISMS
+        self.site_replace = bool_option(options, 'site-replace', False)
         self.default_language = options.get('default-language', 'en')
         self.admin_user = options.get('admin-user', 'admin')
         self.admin_password = options.get('admin-password', '')
@@ -49,10 +74,9 @@ class Recipe(object):
         self.products = options.get('products', "").split()
         self.profiles = options.get('profiles', "").split()
 
-        self.upgrade_portal = options.get(
-            'upgrade-portal', '').lower() in TRUISMS
-        self.upgrade_all_profiles = options.get(
-            'upgrade-all-profiles', '').lower() in TRUISMS
+        self.upgrade_portal = bool_option(options, 'upgrade-portal', False)
+        self.upgrade_all_profiles = bool_option(options, 'upgrade-all-profiles',
+                                                False)
         self.upgrade_profiles = options.get('upgrade-profiles', '').split()
 
         self.post_extras = options.get('post-extras', "").split()
@@ -61,11 +85,9 @@ class Recipe(object):
         self.vhm_protocol = options.get('protocol', "http")
         self.vhm_host = options.get('host', "")
         self.vhm_port = options.get('port', "80")
-        self.use_vhm = options.get('use-vhm', True)
-
-        self.use_sudo = options.get('use-sudo', False)
-        add_mountpoint = options.get('add-mountpoint', '').lower()
-        self.add_mountpoint = add_mountpoint in TRUISMS
+        self.use_vhm = bool_option(options, 'use-vhm', True)
+        self.use_sudo = bool_option(options, 'use-sudo', False)
+        self.add_mountpoint = bool_option(options, 'add-mountpoint', False)
 
         self.log_level = buildout._log_level
         options['args'] = self.createArgs()
@@ -73,7 +95,7 @@ class Recipe(object):
         # We can disable the starting of zope and zeo.  useful from the
         # command line:
         # $ bin/buildout -v plonesite:enabled=false
-        self.enabled = options.get('enabled', 'true').lower() in TRUISMS
+        self.enabled = bool_option(options, 'enabled', True)
 
         # figure out if we need a zeo server started, and if it's on windows
         # this code was borrowed from plone.recipe.runscript
