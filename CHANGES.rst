@@ -1,8 +1,8 @@
 1.12.1 (unreleased)
 ===================
 
-- Nothing changed yet.
-
+- Add compatability with Plone 6.1 and 6.2 with plone.distribution.
+  [pbauer]
 
 1.12.0 (2021-03-06)
 ===================

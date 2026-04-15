@@ -47,6 +47,13 @@ try:
 except ImportError:
     upgrade = None
 
+HAVE_DISTRIBUTIONS = True
+try:
+    from plone.distribution.api import site
+    from Products.CMFPlone.factory import addPloneSite
+    from Products.CMFPlone.factory import _DEFAULT_PROFILE
+except ImportError:
+    HAVE_DISTRIBUTIONS = False
 
 logger = logging.getLogger('collective.recipe.plonesite')
 
@@ -112,19 +119,30 @@ def create(
     if site_id not in oids:
         created = True
         if has_setup_content():
-            # we have to simulate the new zmi admin screen here - at
-            # least provide:
-            # extension_ids
-            # setup_content (plone default is currently 'true')
-            container.REQUEST.form.update({
-                'form.submitted': True,
-                'site_id': site_id,
-                'setup_content': False,
-                'default_language': default_language})
-            form = container.restrictedTraverse('@@plone-addsite')
-            # Skip the template rendering
-            form.index = lambda: None
-            form()
+            if HAVE_DISTRIBUTIONS:
+                payload = {
+                    "title": "Plone",
+                    "profile_id": _DEFAULT_PROFILE,
+                    "distribution_name": "classic",
+                    "setup_content": False,
+                    "default_language": default_language,
+                    "portal_timezone": "UTC",
+                }
+                addPloneSite(container, site_id, **payload)
+            else:
+                # we have to simulate the zmi admin screen here - at
+                # least provide:
+                # extension_ids
+                # setup_content (plone default is currently 'true')
+                container.REQUEST.form.update({
+                    'form.submitted': True,
+                    'site_id': site_id,
+                    'setup_content': False,
+                    'default_language': default_language})
+                form = container.restrictedTraverse('@@plone-addsite')
+                # Skip the template rendering
+                form.index = lambda: None
+                form()
         else:
             factory = container.manage_addProduct['CMFPlone']
             factory.addPloneSite(site_id, create_userfolder=1)
