@@ -1,8 +1,26 @@
-1.12.1 (unreleased)
-===================
+Changelog
+*********
 
-- Nothing changed yet.
+2.0.0 (unreleased)
+==================
 
+- Support only Python 3.10+ and Plone 6.1+ with plone.distribution.
+  [pbauer, szakitibi]
+
+- Removed the ``products`` and ``products-initial`` options.
+  [szakitibi]
+
+- Only create the site with a distribution when ``plone.classicui`` or
+  ``plone.volto`` is installed, so ``plone.distribution`` is not required.
+  [szakitibi]
+
+- Added the ``distribution`` option to choose the distribution explicitly,
+  or to skip distributions entirely with ``distribution = none``.
+  [szakitibi]
+
+- Modernized codebase: move into ``src/``, PEP 420 native namespace,
+  configure with ``zope.meta``, switch to unit tests, and more.
+  [szakitibi]
 
 1.12.0 (2021-03-06)
 ===================

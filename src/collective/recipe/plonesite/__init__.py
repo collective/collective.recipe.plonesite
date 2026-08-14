@@ -1,13 +1,14 @@
-# -*- coding: utf-8 -*-
 """Recipe plonesite"""
 
 import os
-import pkg_resources
 import subprocess
 import sys
+from importlib.resources import files
+
+import zc.buildout
 
 
-TRUISMS = [
+TRUISMS = {
     'yes',
     'y',
     'on',
@@ -15,7 +16,7 @@ TRUISMS = [
     'sure',
     'ok',
     '1',
-]
+}
 
 
 def system(c):
@@ -23,15 +24,24 @@ def system(c):
         raise SystemError("Failed", c)
 
 
-class Recipe(object):
+class Recipe:
     """zc.buildout recipe"""
 
     def __init__(self, buildout, name, options):
+        removed = [opt for opt in ('products', 'products-initial')
+                   if options.get(opt, '').strip()]
+        if removed:
+            raise zc.buildout.UserError(
+                f"The option(s) {', '.join(removed)} are no longer "
+                f"supported in collective.recipe.plonesite 2.0+. "
+                f"Plone 6 has no Quickinstaller; use GenericSetup "
+                f"profiles via 'profiles' / 'profiles-initial' instead."
+            )
         self.buildout, self.name, self.options = buildout, name, options
         options['location'] = os.path.join(
             buildout['buildout']['parts-directory'],
             self.name,
-            )
+        )
         # suppress script generation.
         self.options['scripts'] = ''
         options['bin-directory'] = buildout['buildout']['bin-directory']
@@ -41,12 +51,11 @@ class Recipe(object):
         self.container_path = options.get('container-path', '/')
         self.site_replace = options.get('site-replace', '').lower() in TRUISMS
         self.default_language = options.get('default-language', 'en')
+        self.distribution = options.get('distribution', '').strip()
         self.admin_user = options.get('admin-user', 'admin')
         self.admin_password = options.get('admin-password', '')
 
-        self.products_initial = options.get('products-initial', "").split()
         self.profiles_initial = options.get('profiles-initial', "").split()
-        self.products = options.get('products', "").split()
         self.profiles = options.get('profiles', "").split()
 
         self.upgrade_portal = options.get(
@@ -77,14 +86,14 @@ class Recipe(object):
 
         # figure out if we need a zeo server started, and if it's on windows
         # this code was borrowed from plone.recipe.runscript
-        is_win = sys.platform[:3].lower() == "win"
+        is_win = sys.platform == 'win32'
         # grab the 'instance' option and default to 'instance' if it does not
         # exist
         instance = buildout[options.get('instance', 'instance')]
         instance_home = instance['location']
         instance_script = os.path.basename(instance_home)
         if is_win:
-            instance_script = "%s.exe" % instance_script
+            instance_script = f"{instance_script}.exe"
         options['instance-script'] = instance_script
         self.zeoserver = options.get('zeoserver', False)
         if self.zeoserver:
@@ -93,7 +102,7 @@ class Recipe(object):
                 if os.path.exists(exe):
                     zeo_script = 'zeoservice.exe'
                 else:
-                    zeo_script = "%s_service.exe" % self.zeoserver
+                    zeo_script = f"{self.zeoserver}_service.exe"
             else:
                 zeo_home = buildout[self.zeoserver]['location']
                 zeo_script = os.path.basename(zeo_home)
@@ -116,27 +125,30 @@ class Recipe(object):
             if self.before_install:
                 system(self.before_install)
             if self.zeoserver:
-                zeo_cmd = "%(bin-directory)s/%(zeo-script)s" % options
-                zeo_start = "%s start" % zeo_cmd
+                zeo_cmd = (
+                    f"{options['bin-directory']}/{options['zeo-script']}"
+                )
+                zeo_start = f"{zeo_cmd} start"
 
                 if self.use_sudo:
-                    zeo_start = "sudo " + zeo_start
+                    zeo_start = f"sudo {zeo_start}"
                 subprocess.call(zeo_start.split())
 
             # XXX This seems wrong...
-            options['script'] = pkg_resources.resource_filename(
-                __name__, 'plonesite.py')
+            options['script'] = str(files(__name__).joinpath('plonesite.py'))
             # run the script
-            cmd = ("%(bin-directory)s/%(instance-script)s run "
-                   "%(script)s %(args)s") % options
+            cmd = (
+                f"{options['bin-directory']}/{options['instance-script']} "
+                f"run {options['script']} {options['args']}"
+            )
             if self.use_sudo:
-                cmd = "sudo %s" % cmd
+                cmd = f"sudo {cmd}"
             subprocess.call(cmd.split())
 
             if self.zeoserver:
-                zeo_stop = "%s stop" % zeo_cmd
+                zeo_stop = f"{zeo_cmd} stop"
                 if self.use_sudo:
-                    zeo_stop = "sudo " + zeo_stop
+                    zeo_stop = f"sudo {zeo_stop}"
                 subprocess.call(zeo_stop.split())
             if self.after_install:
                 system(self.after_install)
@@ -150,31 +162,36 @@ class Recipe(object):
     def createArgs(self):
         """Helper method to create an argument list
         """
-        args = []
-        args.append("--site-id=%s" % self.site_id)
+        args = [
+            f"--site-id={self.site_id}",
+        ]
         # only pass the site replace option if it's True
         if self.site_replace:
             args.append("--site-replace")
-        args.append("--admin-user=%s" % self.admin_user)
-        args.append("--admin-password=%s" % self.admin_password)
-        args.append("--container-path=%s" % self.container_path)
-        args.append("--default-language=%s" % self.default_language)
-        args.append("--host=%s" % self.vhm_host)
-        args.append("--port=%s" % self.vhm_port)
-        args.append("--use-vhm=%s" % self.use_vhm)
-        args.append("--protocol=%s" % self.vhm_protocol)
-        args.append("--log-level=%s" % self.log_level)
-        args.append("--add-mountpoint=%s" % self.add_mountpoint)
+        # leave the distribution auto-detection alone unless configured
+        if self.distribution:
+            args.append(f"--distribution={self.distribution}")
+        args.extend([
+            f"--admin-user={self.admin_user}",
+            f"--admin-password={self.admin_password}",
+            f"--container-path={self.container_path}",
+            f"--default-language={self.default_language}",
+            f"--host={self.vhm_host}",
+            f"--port={self.vhm_port}",
+            f"--use-vhm={self.use_vhm}",
+            f"--protocol={self.vhm_protocol}",
+            f"--log-level={self.log_level}",
+            f"--add-mountpoint={self.add_mountpoint}",
+        ])
 
         def createArgList(arg_name, arg_list):
             if arg_list:
                 for arg in arg_list:
-                    args.append("%s=%s" % (arg_name, arg))
+                    args.append(f"{arg_name}={arg}")
+
         createArgList('--pre-extras', self.pre_extras)
         createArgList('--post-extras', self.post_extras)
 
-        createArgList('--products-initial', self.products_initial)
-        createArgList('--products', self.products)
         createArgList('--profiles-initial', self.profiles_initial)
         createArgList('--profiles', self.profiles)
 

@@ -1,77 +1,67 @@
-# -*- coding: utf-8 -*-
 """
 This module contains the tool of collective.recipe.plonesite
 """
-from setuptools import find_packages
+from pathlib import Path
+
 from setuptools import setup
 
-import os
 
+version = '2.0.0.dev0'
 
-def read(*rnames):
-    return open(os.path.join(os.path.dirname(__file__), *rnames)).read()
-
-version = '1.12.1.dev0'
-
-long_description = (
-    read('README.rst')
-    + '\n' +
-    'Detailed Documentation\n'
-    '**********************\n'
-    + '\n' +
-    read('collective', 'recipe', 'plonesite', 'README.rst')
-    + '\n' +
-    'Contributors\n'
-    '************\n'
-    + '\n' +
-    read('CONTRIBUTORS.rst')
-    + '\n' +
-    'Change history\n'
-    '**************\n'
-    + '\n' +
-    read('CHANGES.rst')
-    + '\n' +
-    'Download\n'
-    '********\n')
+long_description = '\n\n'.join(
+    Path(filename).read_text(encoding='utf-8')
+    for filename in ('README.rst', 'CONTRIBUTORS.rst', 'CHANGES.rst')
+)
 
 entry_point = 'collective.recipe.plonesite:Recipe'
-entry_points = {"zc.buildout": ["default = %s" % entry_point]}
-
-tests_require = ['zope.testing', 'zc.buildout']
+entry_points = {
+    'zc.buildout': [
+        f'default = {entry_point}',
+    ]
+}
 
 setup(
     name='collective.recipe.plonesite',
     version=version,
-    description="A buildout recipe to create and update a plone site",
+    description='A buildout recipe to create and update a plone site',
     long_description=long_description,
-    # Get more strings from:
-    # http://www.python.org/pypi?%3Aaction=list_classifiers
+    long_description_content_type='text/x-rst',
     classifiers=[
         'Framework :: Buildout',
+        'Framework :: Plone',
+        'Framework :: Plone :: 6.1',
+        'Framework :: Plone :: 6.2',
         'Intended Audience :: Developers',
+        'License :: OSI Approved :: Zope Public License',
+        'Operating System :: OS Independent',
+        'Programming Language :: Python',
+        'Programming Language :: Python :: 3',
+        'Programming Language :: Python :: 3.10',
+        'Programming Language :: Python :: 3.11',
+        'Programming Language :: Python :: 3.12',
+        'Programming Language :: Python :: 3.13',
+        'Programming Language :: Python :: 3.14',
         'Topic :: Software Development :: Build Tools',
         'Topic :: Software Development :: Libraries :: Python Modules',
-        'License :: OSI Approved :: Zope Public License',
     ],
     keywords='plone buildout recipe',
     author='Clayton Parker',
     author_email='info@sixfeetup.com',
-    url='http://sixfeetup.com',
+    url='https://github.com/collective/collective.recipe.plonesite',
     license='ZPL',
-    packages=find_packages(exclude=['ez_setup']),
-    namespace_packages=['collective', 'collective.recipe'],
     include_package_data=True,
     zip_safe=False,
+    python_requires='>=3.10',
     install_requires=[
         'setuptools',
         'zc.buildout',
-        'six'
-        # -*- Extra requirements: -*-
     ],
-    tests_require=tests_require,
     extras_require=dict(
-        tests=tests_require,
-        upgrade=['collective.upgrade>=1.0rc1']),
-    test_suite='collective.recipe.plonesite.tests.test_docs.test_suite',
+        test=[
+            'zc.buildout[test]',
+            'zope.testrunner',
+        ],
+        upgrade=['collective.upgrade>=1.0rc1'],
+    ),
     entry_points=entry_points,
 )

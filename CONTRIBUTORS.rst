@@ -1,3 +1,6 @@
+Contributors
+************
+
 - Clayton Parker [claytron], Author
 - Andrew Burkhalter [andrewb]
 - JeanMichel FRANCOIS [toutpt]
@@ -12,3 +15,4 @@
 - Bryan Wilson [bryanlandia]
 - Chrissy Wainwright [cdw9]
 - Victor Fernandez de Alba [sneridagh]
+- Tibor Szakmány [szakitibi], Contributor
